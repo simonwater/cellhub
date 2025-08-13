@@ -1,0 +1,22 @@
+{
+  "name": "@cellhub/cellhub",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev:nestjs": "pnpm --filter nestjs-backend dev",
+    "dev:backend": "pnpm --filter backend start:dev",
+    "dev:web": "pnpm --filter web dev",
+    "build:backend": "pnpm --filter backend build",
+    "build:web": "pnpm --filter web build",
+    "test:all": "pnpm -r test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.13.0",
+    "npm": "please-use-pnpm"
+  },
+  "packageManager": "pnpm@9.13.0"
+}

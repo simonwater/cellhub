@@ -1,0 +1,20 @@
+{
+  "name": "@superset-ui/plugin-chart-pivot-table",
+  "version": "0.20.3",
+  "main": "src/index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@superset-ui/chart-controls": "workspace:*",
+    "@superset-ui/core": "workspace:*",
+    "lodash": "^4.17.11",
+    "prop-types": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.28.0",
+    "@types/jest": "^29.5.12",
+    "jest": "^30.0.5"
+  }
+}

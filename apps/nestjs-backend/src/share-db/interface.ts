@@ -1,0 +1,59 @@
+import type { ISnapshotBase } from '@teable/core';
+import type { CreateOp, DB, DeleteOp, EditOp } from 'sharedb';
+
+export interface IReadonlyAdapterService {
+  getSnapshotBulk(
+    collectionId: string,
+    ids: string[],
+    projection?: { [fieldNameOrId: string]: boolean },
+    extra?: unknown
+  ): Promise<ISnapshotBase<unknown>[]>;
+
+  getDocIdsByQuery(
+    collectionId: string,
+    query: unknown
+  ): Promise<{ ids: string[]; extra?: unknown }>;
+}
+
+export interface IShareDbReadonlyAdapterService extends IReadonlyAdapterService {
+  // get current version and data of the document
+  // return version 0 if the document is deleted
+  // return version 1 if the document is created
+  // return version > 1 if the document is updated
+  getVersion(collectionId: string, docId: string): Promise<number>;
+}
+
+export interface IAdapterService {
+  create(collectionId: string, snapshot: unknown): Promise<void>;
+
+  del(version: number, collectionId: string, docId: string): Promise<void>;
+
+  update(
+    version: number,
+    collectionId: string,
+    docId: string,
+    opContexts: unknown[]
+  ): Promise<void>;
+}
+
+export interface IShareDbConfig {
+  db: DB;
+}
+
+export enum RawOpType {
+  Create = 'create',
+  Del = 'del',
+  Edit = 'edit',
+}
+
+export type IEditOp = Omit<EditOp, 'c' | 'd' | 'create' | 'del'>;
+export type IDeleteOp = Omit<DeleteOp, 'c' | 'd' | 'create' | 'op'>;
+export type ICreateOp = Omit<CreateOp, 'c' | 'd' | 'op' | 'del'>;
+
+export type IRawOp = ICreateOp | IDeleteOp | IEditOp;
+
+export interface IRawOpMap {
+  [collection: string]: {
+    [docId: string]: IRawOp;
+  };
+}
