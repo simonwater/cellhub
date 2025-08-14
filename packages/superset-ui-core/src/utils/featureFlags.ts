@@ -16,52 +16,52 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import logger from './logging';
+import logger from "./logging";
 
 // We can codegen the enum definition based on a list of supported flags that we
 // check into source control. We're hardcoding the supported flags for now.
 export enum FeatureFlag {
   // PLEASE KEEP THE LIST SORTED ALPHABETICALLY
-  AlertsAttachReports = 'ALERTS_ATTACH_REPORTS',
-  AlertReports = 'ALERT_REPORTS',
-  AlertReportTabs = 'ALERT_REPORT_TABS',
-  AlertReportSlackV2 = 'ALERT_REPORT_SLACK_V2',
-  AllowFullCsvExport = 'ALLOW_FULL_CSV_EXPORT',
-  AvoidColorsCollision = 'AVOID_COLORS_COLLISION',
-  ChartPluginsExperimental = 'CHART_PLUGINS_EXPERIMENTAL',
-  ConfirmDashboardDiff = 'CONFIRM_DASHBOARD_DIFF',
-  CssTemplates = 'CSS_TEMPLATES',
-  DashboardVirtualization = 'DASHBOARD_VIRTUALIZATION',
-  DashboardRbac = 'DASHBOARD_RBAC',
-  DatapanelClosedByDefault = 'DATAPANEL_CLOSED_BY_DEFAULT',
+  AlertsAttachReports = "ALERTS_ATTACH_REPORTS",
+  AlertReports = "ALERT_REPORTS",
+  AlertReportTabs = "ALERT_REPORT_TABS",
+  AlertReportSlackV2 = "ALERT_REPORT_SLACK_V2",
+  AllowFullCsvExport = "ALLOW_FULL_CSV_EXPORT",
+  AvoidColorsCollision = "AVOID_COLORS_COLLISION",
+  ChartPluginsExperimental = "CHART_PLUGINS_EXPERIMENTAL",
+  ConfirmDashboardDiff = "CONFIRM_DASHBOARD_DIFF",
+  CssTemplates = "CSS_TEMPLATES",
+  DashboardVirtualization = "DASHBOARD_VIRTUALIZATION",
+  DashboardRbac = "DASHBOARD_RBAC",
+  DatapanelClosedByDefault = "DATAPANEL_CLOSED_BY_DEFAULT",
   /** @deprecated */
-  DrillToDetail = 'DRILL_TO_DETAIL',
-  DrillBy = 'DRILL_BY',
-  DynamicPlugins = 'DYNAMIC_PLUGINS',
-  EmbeddableCharts = 'EMBEDDABLE_CHARTS',
-  EmbeddedSuperset = 'EMBEDDED_SUPERSET',
-  EnableAdvancedDataTypes = 'ENABLE_ADVANCED_DATA_TYPES',
+  DrillToDetail = "DRILL_TO_DETAIL",
+  DrillBy = "DRILL_BY",
+  DynamicPlugins = "DYNAMIC_PLUGINS",
+  EmbeddableCharts = "EMBEDDABLE_CHARTS",
+  EmbeddedSuperset = "EMBEDDED_SUPERSET",
+  EnableAdvancedDataTypes = "ENABLE_ADVANCED_DATA_TYPES",
   /** @deprecated */
-  EnableJavascriptControls = 'ENABLE_JAVASCRIPT_CONTROLS',
-  EnableTemplateProcessing = 'ENABLE_TEMPLATE_PROCESSING',
-  EscapeMarkdownHtml = 'ESCAPE_MARKDOWN_HTML',
-  EstimateQueryCost = 'ESTIMATE_QUERY_COST',
-  FilterBarClosedByDefault = 'FILTERBAR_CLOSED_BY_DEFAULT',
-  GlobalAsyncQueries = 'GLOBAL_ASYNC_QUERIES',
-  ListviewsDefaultCardView = 'LISTVIEWS_DEFAULT_CARD_VIEW',
-  ScheduledQueries = 'SCHEDULED_QUERIES',
-  SqllabBackendPersistence = 'SQLLAB_BACKEND_PERSISTENCE',
-  SqlValidatorsByEngine = 'SQL_VALIDATORS_BY_ENGINE',
-  SshTunneling = 'SSH_TUNNELING',
-  TaggingSystem = 'TAGGING_SYSTEM',
-  Thumbnails = 'THUMBNAILS',
-  UseAnalogousColors = 'USE_ANALOGOUS_COLORS',
-  ForceSqlLabRunAsync = 'SQLLAB_FORCE_RUN_ASYNC',
-  SlackEnableAvatars = 'SLACK_ENABLE_AVATARS',
-  EnableDashboardScreenshotEndpoints = 'ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS',
-  EnableDashboardDownloadWebDriverScreenshot = 'ENABLE_DASHBOARD_DOWNLOAD_WEBDRIVER_SCREENSHOT',
-  TableV2TimeComparisonEnabled = 'TABLE_V2_TIME_COMPARISON_ENABLED',
-  AgGridTableEnabled = 'AG_GRID_TABLE_ENABLED',
+  EnableJavascriptControls = "ENABLE_JAVASCRIPT_CONTROLS",
+  EnableTemplateProcessing = "ENABLE_TEMPLATE_PROCESSING",
+  EscapeMarkdownHtml = "ESCAPE_MARKDOWN_HTML",
+  EstimateQueryCost = "ESTIMATE_QUERY_COST",
+  FilterBarClosedByDefault = "FILTERBAR_CLOSED_BY_DEFAULT",
+  GlobalAsyncQueries = "GLOBAL_ASYNC_QUERIES",
+  ListviewsDefaultCardView = "LISTVIEWS_DEFAULT_CARD_VIEW",
+  ScheduledQueries = "SCHEDULED_QUERIES",
+  SqllabBackendPersistence = "SQLLAB_BACKEND_PERSISTENCE",
+  SqlValidatorsByEngine = "SQL_VALIDATORS_BY_ENGINE",
+  SshTunneling = "SSH_TUNNELING",
+  TaggingSystem = "TAGGING_SYSTEM",
+  Thumbnails = "THUMBNAILS",
+  UseAnalogousColors = "USE_ANALOGOUS_COLORS",
+  ForceSqlLabRunAsync = "SQLLAB_FORCE_RUN_ASYNC",
+  SlackEnableAvatars = "SLACK_ENABLE_AVATARS",
+  EnableDashboardScreenshotEndpoints = "ENABLE_DASHBOARD_SCREENSHOT_ENDPOINTS",
+  EnableDashboardDownloadWebDriverScreenshot = "ENABLE_DASHBOARD_DOWNLOAD_WEBDRIVER_SCREENSHOT",
+  TableV2TimeComparisonEnabled = "TABLE_V2_TIME_COMPARISON_ENABLED",
+  AgGridTableEnabled = "AG_GRID_TABLE_ENABLED",
 }
 
 export type ScheduleQueriesProps = {
@@ -89,12 +89,13 @@ declare global {
 }
 
 export function initFeatureFlags(featureFlags?: FeatureFlagMap) {
-  if (!window.featureFlags) {
+  if (typeof window !== "undefined" && !window.featureFlags) {
     window.featureFlags = featureFlags || {};
   }
 }
 
 export function isFeatureEnabled(feature: FeatureFlag): boolean {
+  if (typeof window === "undefined" || !window.featureFlags) return false;
   try {
     return !!window.featureFlags[feature as keyof FeatureFlagMap];
   } catch (error) {

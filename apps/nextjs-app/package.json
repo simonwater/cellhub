@@ -78,7 +78,9 @@
     "typescript": "5.4.3",
     "vite-plugin-svgr": "4.2.0",
     "vite-tsconfig-paths": "4.3.2",
-    "vitest": "2.1.5"
+    "vitest": "2.1.5",
+    "@types/react-redux": "^7.1.10",
+    "@types/redux-localstorage": "^1.0.8"
   },
   "dependencies": {
     "@antv/g6": "4.8.24",
@@ -107,6 +109,7 @@
     "@hookform/resolvers": "3.3.4",
     "@nem035/gpt-3-encoder": "1.1.7",
     "@radix-ui/react-icons": "1.3.0",
+    "@reduxjs/toolkit": "^1.9.3",
     "@sentry/nextjs": "7.108.0",
     "@sentry/react": "7.108.0",
     "@tailwindcss/container-queries": "0.1.1",
@@ -206,6 +209,12 @@
     "@superset-ui/chart-controls": "workspace:*",
     "@superset-ui/core": "workspace:*",
     "@superset-ui/plugin-chart-pivot-table": "workspace:*",
-    "prop-types": "*"
+    "@superset-ui/plugin-chart-echarts": "workspace:*",
+    "prop-types": "*",
+    "react-redux": "^7.2.9",
+    "redux": "^4.2.1",
+    "redux-localstorage": "^0.4.1",
+    "redux-thunk": "^2.1.0",
+    "redux-undo": "^1.0.0-beta9-9-7"
   }
 }
