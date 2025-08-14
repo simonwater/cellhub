@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { FieldType } from '@teable/core';
+import { Colors, FieldType } from '@teable/core';
 
 import {
   Calendar as CalendarIcon,
@@ -26,6 +26,7 @@ import {
   MagicAi,
 } from '@teable/icons';
 
+import { MousePointerClick } from 'lucide-react';
 import { useCallback } from 'react';
 import { useTranslation } from '../context/app/i18n';
 import {
@@ -186,6 +187,15 @@ export const useFieldStaticGetter = () => {
             title: t('field.title.lastModifiedBy'),
             defaultOptions: {},
             Icon: getIcon(LastModifiedByIcon),
+          };
+        case FieldType.Button:
+          return {
+            title: t('field.title.button'),
+            defaultOptions: {
+              label: t('common.click'),
+              color: Colors.Teal,
+            },
+            Icon: getIcon(MousePointerClick),
           };
         default:
           throw new Error(`field type: ${type} has not define statics`);

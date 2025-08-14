@@ -133,6 +133,16 @@
       "checkbox": {
         "title": "Done"
       },
+      "button": {
+        "title": "Button",
+        "label": "Button label",
+        "color": "Button color",
+        "limitCount": "Limit clicks",
+        "resetCount": "Allow reset",
+        "maxCount": "Max clicks",
+        "automation": "Automation",
+        "customAutomation": "Custom automation"
+      },
       "formula": {
         "title": "Calculation",
         "formula": "Formula"
@@ -243,7 +253,7 @@
       "enableValidateFieldUnique": "Forbid duplicate values",
       "enableValidateFieldNotNull": "Forbid non-empty values",
       "knowMore": "know more",
-      "linkFieldKnowMoreLink": "https://help.teable.io/en/basic/field/advanced/link",
+      "linkFieldKnowMoreLink": "https://help.teable.ai/en/basic/field/advanced/link",
       "showByField": "Show records by field",
       "filterByView": "Filter records by view",
       "filter": "Filter records",
@@ -393,8 +403,8 @@
       "repair": "repair",
       "repairTip": "Index anomalies detected, which may cause search performance degradation. It is recommended to click the repair button to fix the index",
       "enableIndexTip": "You are creating an index. The time required depends on the table size. During this process, the table's read and write performance may be affected. Please be patient.",
-      "globalSearchTip_limited": "Search all fields except date and checkbox field, maximum {{count}} fields",
-      "globalSearchTip_infinity": "Search all fields except date and checkbox field",
+      "globalSearchTip_limited": "Search all fields except date, checkbox and button fields, maximum {{count}} fields",
+      "globalSearchTip_infinity": "Search all fields except date, checkbox and button fields",
       "autoIndexTip": "Your table has exceeded {{rowCount}} rows. We recommend enabling indexing to improve search performance. Please note that indexing may slightly reduce write speed. During index creation, table read/write performance might be temporarily affected. Please be patient.",
       "enableIndex": "enable",
       "keepAsIs": "keep as it",
@@ -569,7 +579,7 @@
     "noPermission": "You don't have permission to access the database",
     "connectionCountTip": "The maximum number of database connections is <b>{{max}}</b> and the current connections is <b>{{current}}</b>",
     "createFailed": "Please ensure that the PUBLIC_DATABASE_PROXY environment variable is set correctly",
-    "helpLink": "https://help.teable.io/en/deploy/database-connection"
+    "helpLink": "https://help.teable.ai/en/deploy/database-connection"
   },
   "view": {
     "addRecord": "Add record",
@@ -593,7 +603,7 @@
     },
     "crash": {
       "title": "Crash!",
-      "description": "This view is broken. If the refresh still fails, please contact us. support@teable.io"
+      "description": "This view is broken. If the refresh still fails, please contact us. support@teable.ai"
     },
     "addPluginView": "Add Plugin View",
     "search": {

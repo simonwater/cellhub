@@ -35,7 +35,9 @@
     "restore": "Восстановить",
     "permanentDelete": "Удалить навсегда",
     "more": "Больше",
-    "move": "Переместить в"
+    "move": "Переместить в",
+    "turnOn": "Включить",
+    "exit": "Выйти"
   },
   "quickAction": {
     "title": "Быстрые действия...",
@@ -201,7 +203,7 @@
   },
   "help": {
     "title": "Помощь",
-    "apiLink": "https://help.teable.io/en/api-doc/token"
+    "apiLink": "https://help.teable.ai/en/api-doc/token"
   },
   "pagePermissionChangeTip": "Разрешения страницы были обновлены. Пожалуйста, обновите страницу, чтобы увидеть последние изменения.",
   "listEmptyTips": "Список пуст",
@@ -326,5 +328,8 @@
     "fromSpace": "Из пространства \"{{name}}\"",
     "permanentDeleteTips": "Вы уверены, что хотите окончательно удалить \"{{name}}\" {{resource}}?",
     "resetTrashConfirm": "Вы уверены, что хотите очистить корзину?"
+  },
+  "automation": {
+    "turnOnTip": "Вы уверены, что хотите включить текущую автоматизацию?"
   }
 }

@@ -42,7 +42,9 @@
     "showAllRow": "Mostrar todas las filas",
     "hideNotMatchRow": "Ocultar filas sin coincidencia",
     "more": "Más",
-    "move": "Mover a"
+    "move": "Mover a",
+    "turnOn": "Activar",
+    "exit": "Cerrar sesión"
   },
   "quickAction": {
     "title": "Acciones Rápidas...",
@@ -220,7 +222,7 @@
   },
   "help": {
     "title": "Ayuda",
-    "apiLink": "https://help.teable.io/en/api-doc/token"
+    "apiLink": "https://help.teable.ai/en/api-doc/token"
   },
   "pagePermissionChangeTip": "Los permisos de la página se han actualizado. ",
   "listEmptyTips": "La lista está vacía",
@@ -353,5 +355,8 @@
     "pluginEmpty": {
       "title": "Todavía no hay complementos"
     }
+  },
+  "automation": {
+    "turnOnTip": "¿Desea activar la automatización actual?"
   }
 }

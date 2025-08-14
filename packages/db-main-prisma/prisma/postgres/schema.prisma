@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  binaryTargets   = ["native", "debian-openssl-1.1.x"]
+  binaryTargets   = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -188,6 +188,7 @@ model User {
   createdTime      DateTime  @default(now()) @map("created_time")
   deletedTime      DateTime? @map("deleted_time")
   lastModifiedTime DateTime? @updatedAt @map("last_modified_time")
+  permanentDeletedTime DateTime? @map("permanent_deleted_time")
   refMeta          String?   @map("ref_meta")
 
   accounts         Account[]
@@ -566,7 +567,6 @@ model UserLastVisit {
 
   @@unique([userId, resourceType, resourceId])
   @@index([userId, resourceType, parentResourceId])
-  @@index([userId, resourceType])
   @@map("user_last_visit")
 }
 

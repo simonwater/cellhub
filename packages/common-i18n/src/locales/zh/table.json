@@ -134,6 +134,16 @@
       "checkbox": {
         "title": "勾选"
       },
+      "button": {
+        "title": "按钮",
+        "label": "按钮文字",
+        "color": "按钮颜色",
+        "limitCount": "限制点击次数",
+        "resetCount": "允许重置点击计数",
+        "maxCount": "最大点击计数",
+        "automation": "自动化",
+        "customAutomation": "自定义自动化"
+      },
       "formula": {
         "title": "计算",
         "formula": "公式"
@@ -392,8 +402,8 @@
       "repair": "修复",
       "repairTip": "检测到索引异常，可能导致搜索性能下降，建议点击修复按钮修复索引",
       "enableIndexTip": "您正在创建索引，创建索引的时间取决于表的大小，创建过程中，表的读写性能可能会受到一定影响，请耐心等待。",
-      "globalSearchTip_limited": "对所有字段模糊搜索，不支持日期和勾选字段，最多支持 {{count}} 个字段",
-      "globalSearchTip_infinity": "对所有字段模糊搜索，不支持日期和勾选字段",
+      "globalSearchTip_limited": "对所有字段模糊搜索，不支持日期, 勾选和按钮字段，最多支持 {{count}} 个字段",
+      "globalSearchTip_infinity": "对所有字段模糊搜索，不支持日期, 勾选和按钮字段",
       "autoIndexTip": "检测到你的表超过 {{rowCount}} 行，建议开启索引以提升搜索性能，开启索引会略微降低写入速度。创建索引期间可能会影响表的读写性能，请耐心等待。",
       "enableIndex": "开启",
       "keepAsIs": "暂不开启",
@@ -593,7 +603,7 @@
     },
     "crash": {
       "title": "页面崩溃!",
-      "description": "当前页面意外崩溃，请刷新重试，如果持续出现问题请咨询 support@teable.io 获取帮助"
+      "description": "当前页面意外崩溃，请刷新重试，如果持续出现问题请咨询 support@teable.ai 获取帮助"
     },
     "addPluginView": "视图插件",
     "search": {

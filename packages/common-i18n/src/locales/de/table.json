@@ -133,6 +133,16 @@
       "checkbox": {
         "title": "Erledigt"
       },
+      "button": {
+        "title": "Schaltfläche",
+        "label": "Schaltflächentext",
+        "color": "Schaltflächencolor",
+        "limitCount": "Klickzähler begrenzen",
+        "resetCount": "Zurücksetzen des Klickzählers erlauben",
+        "maxCount": "Maximale Klickzahl",
+        "automation": "Automatisierung",
+        "customAutomation": "Benutzerdefinierte Automatisierung"
+      },
       "formula": {
         "title": "Berechnung",
         "formula": "Formel"
@@ -243,7 +253,7 @@
       "enableValidateFieldUnique": "Doppelte Werte verbieten",
       "enableValidateFieldNotNull": "Nicht-leere Werte verbieten",
       "knowMore": "mehr erfahren",
-      "linkFieldKnowMoreLink": "https://help.teable.io/en/basic/field/advanced/link",
+      "linkFieldKnowMoreLink": "https://help.teable.ai/en/basic/field/advanced/link",
       "showByField": "Datensätze nach Feld filtern",
       "filterByView": "Datensätze nach Ansicht filtern",
       "filter": "Datensätze filtern",
@@ -393,8 +403,8 @@
       "repair": "Reparieren",
       "repairTip": "Es wurden Indexanomalien entdeckt, die zu einer Verschlechterung der Suchleistung führen können. Es wird empfohlen, auf die Reparieren-Schaltfläche zu klicken, um den Index zu reparieren.",
       "enableIndexTip": "Sie erstellen einen Index. Die benötigte Zeit hängt von der Größe der Tabelle ab. Während dieses Vorgangs kann die Lese- und Schreibleistung der Tabelle beeinträchtigt werden. Bitte haben Sie Geduld.",
-      "globalSearchTip_limited": "Alle Felder durchsuchen außer Datum Feld und Checkbox Feld, maximal {{count}} Felder",
-      "globalSearchTip_infinity": "Alle Felder durchsuchen außer Datum Feld und Checkbox Feld",
+      "globalSearchTip_limited": "Alle Felder durchsuchen außer Datum Feld, Checkbox Feld und Button Feld, maximal {{count}} Felder",
+      "globalSearchTip_infinity": "Alle Felder durchsuchen außer Datum Feld, Checkbox Feld und Button Feld",
       "autoIndexTip": "Ihre Tabelle hat {{rowCount}} Zeilen überschritten. Wir empfehlen, die Indizierung zu aktivieren, um die Suchleistung zu verbessern. Bitte beachten Sie, dass die Indizierung die Schreibgeschwindigkeit leicht verringern kann. Während der Indexerstellung kann die Lese-/Schreibleistung der Tabelle vorübergehend beeinträchtigt sein. Bitte haben Sie etwas Geduld.",
       "enableIndex": "aktivieren",
       "keepAsIs": "beibehalten"
@@ -562,7 +572,7 @@
     "noPermission": "Sie haben keine Berechtigung zum Zugriff auf die Datenbank",
     "connectionCountTip": "Die maximale Anzahl von Datenbankverbindungen beträgt <b>{{max}}</b> und die aktuellen Verbindungen sind <b>{{current}}</b>",
     "createFailed": "Bitte stellen Sie sicher, dass die Umgebungsvariable PUBLIC_DATABASE_PROXY korrekt gesetzt ist",
-    "helpLink": "https://help.teable.io/en/deploy/database-connection"
+    "helpLink": "https://help.teable.ai/en/deploy/database-connection"
   },
   "view": {
     "addRecord": "Datensatz hinzufügen",
@@ -586,7 +596,7 @@
     },
     "crash": {
       "title": "Crash!",
-      "description": "Diese Ansicht ist defekt. Wenn die Aktualisierung weiterhin fehlschlägt, kontaktieren Sie uns bitte. support@teable.io"
+      "description": "Diese Ansicht ist defekt. Wenn die Aktualisierung weiterhin fehlschlägt, kontaktieren Sie uns bitte. support@teable.ai"
     },
     "addPluginView": "Ansicht Plugin hinzufügen",
     "search": {

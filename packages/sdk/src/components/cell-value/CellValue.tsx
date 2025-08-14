@@ -8,10 +8,13 @@ import type {
   IDatetimeFormatting,
   ILinkCellValue,
   SingleLineTextDisplayType,
+  IButtonFieldCellValue,
+  IButtonFieldOptions,
 } from '@teable/core';
 import { CellValueType, FieldType } from '@teable/core';
 import type { IFieldInstance } from '../../model';
 import { CellAttachment } from './cell-attachment';
+import { CellButton } from './cell-button';
 import { CellCheckbox } from './cell-checkbox';
 import { CellDate } from './cell-date';
 import { CellLink } from './cell-link';
@@ -26,11 +29,12 @@ interface ICellValueContainer extends ICellValue<unknown> {
   field: IFieldInstance;
   formatImageUrl?: (url: string) => string;
   itemClassName?: string;
+  readonly?: boolean;
 }
 
 export const CellValue = (props: ICellValueContainer) => {
-  const { field, value, ellipsis, className, itemClassName, formatImageUrl } = props;
-  const { type, options, cellValueType } = field;
+  const { field, value, ellipsis, className, itemClassName, formatImageUrl, readonly } = props;
+  const { type, options, cellValueType, isLookup } = field;
 
   switch (type) {
     case FieldType.LongText: {
@@ -117,6 +121,17 @@ export const CellValue = (props: ICellValueContainer) => {
     }
     case FieldType.Checkbox: {
       return <CellCheckbox value={value as boolean | boolean[]} className={className} />;
+    }
+    case FieldType.Button: {
+      return (
+        <CellButton
+          value={value as IButtonFieldCellValue}
+          className={className}
+          options={options as IButtonFieldOptions}
+          readonly={readonly}
+          isLookup={isLookup}
+        />
+      );
     }
     case FieldType.Formula:
     case FieldType.Rollup: {

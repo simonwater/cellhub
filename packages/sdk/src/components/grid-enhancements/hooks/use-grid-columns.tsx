@@ -1,5 +1,17 @@
-import type { IAttachmentCellValue, INumberShowAs, ISingleLineTextShowAs } from '@teable/core';
-import { RowHeightLevel, CellValueType, ColorUtils, FieldType } from '@teable/core';
+import type {
+  IAttachmentCellValue,
+  IButtonFieldCellValue,
+  IButtonFieldOptions,
+  INumberShowAs,
+  ISingleLineTextShowAs,
+} from '@teable/core';
+import {
+  RowHeightLevel,
+  CellValueType,
+  ColorUtils,
+  FieldType,
+  checkButtonClickable,
+} from '@teable/core';
 import { useTheme } from '@teable/next-themes';
 import { keyBy } from 'lodash';
 import { LRUCache } from 'lru-cache';
@@ -15,6 +27,7 @@ import {
   onMixedTextClick,
 } from '../..';
 import { useTranslation } from '../../../context/app/i18n/useTranslation';
+import type { IButtonClickStatusHook } from '../../../hooks';
 import { useFields, useTablePermission, useView } from '../../../hooks';
 import type { IFieldInstance, NumberField, Record } from '../../../model';
 import type { GridView } from '../../../model/view';
@@ -178,11 +191,11 @@ export const useCreateCellValue2GridDisplay = (
         record: Record,
         col: number,
         isPrefilling?: boolean,
-        expandRecord?: (tableId: string, recordId: string) => void
+        expandRecord?: (tableId: string, recordId: string) => void,
+        buttonClickStatusHook?: IButtonClickStatusHook
         // eslint-disable-next-line sonarjs/cognitive-complexity
       ): ICell => {
         const field = fields[col];
-
         if (field == null) return { type: CellType.Loading };
 
         const {
@@ -490,6 +503,24 @@ export const useCreateCellValue2GridDisplay = (
               customEditor: (props, editorRef) => (
                 <GridUserEditor ref={editorRef} field={field} record={record} {...props} />
               ),
+            };
+          }
+          case FieldType.Button: {
+            return {
+              ...baseCellProps,
+              readonly:
+                // readonly ||
+                !checkButtonClickable(
+                  field.options as IButtonFieldOptions,
+                  cellValue as IButtonFieldCellValue
+                ),
+              type: CellType.Button,
+              data: {
+                tableId: field.tableId,
+                cellValue: cellValue as IButtonFieldCellValue,
+                fieldOptions: field.options,
+                statusHook: buttonClickStatusHook,
+              },
             };
           }
           default: {

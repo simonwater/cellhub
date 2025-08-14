@@ -45,7 +45,9 @@
     "more": "More",
     "expand": "Expand",
     "deleteTip": "Are you sure you want to delete \"{{name}}\"?",
-    "move": "Move to"
+    "move": "Move to",
+    "turnOn": "Turn on",
+    "exit": "Exit"
   },
   "quickAction": {
     "title": "Quick Actions...",
@@ -170,6 +172,20 @@
           "desc": "You will be redirected to the login page in 2 seconds.",
           "sendSuccess": "Verification code sent successfully."
         }
+      },
+      "deleteAccount": {
+        "title": "Delete Account",
+        "desc": "This action is irreversible. It will permanently delete your account and all associated data.",
+        "error": {
+          "title": "Unable to delete account",
+          "desc": "You need to handle the following dependencies first:",
+          "spacesError": "Before deleting your account, you need to leave your spaces(or delete and then go to trash) first."
+        },
+        "confirm": {
+          "title": "Please enter <code>DELETE</code> to confirm",
+          "placeholder": "DELETE"
+        },
+        "loading": "Deleting..."
       }
     },
     "notify": {
@@ -304,9 +320,9 @@
   },
   "help": {
     "title": "Help",
-    "appLink": "https://app.teable.io",
-    "mainLink": "https://help.teable.io/en",
-    "apiLink": "https://help.teable.io/en/api-doc/token"
+    "appLink": "https://app.teable.ai",
+    "mainLink": "https://help.teable.ai/en",
+    "apiLink": "https://help.teable.ai/en/api-doc/token"
   },
   "pagePermissionChangeTip": "Page permissions have been updated. Please refresh the page to see the latest content.",
   "listEmptyTips": "The list is empty",
@@ -458,5 +474,8 @@
     "pluginEmpty": {
       "title": "No Plugins Yet"
     }
+  },
+  "automation": {
+    "turnOnTip": "Do you want to turn on the current automation?"
   }
 }

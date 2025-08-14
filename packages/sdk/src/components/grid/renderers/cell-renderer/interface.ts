@@ -1,4 +1,6 @@
+import type { IButtonFieldCellValue, IButtonFieldOptions } from '@teable/core';
 import type { CSSProperties, ForwardRefRenderFunction } from 'react';
+import type { IButtonClickStatus, IButtonClickStatusHook } from '../../../../hooks';
 import type { IEditorProps, IEditorRef } from '../../components';
 import type { IGridTheme } from '../../configs';
 import type { IActiveCellBound, ICellPosition, IRectangle } from '../../interface';
@@ -15,6 +17,7 @@ export enum CellType {
   User = 'User',
   Boolean = 'Boolean',
   Loading = 'Loading',
+  Button = 'Button',
 }
 
 export enum EditorType {
@@ -154,6 +157,16 @@ export interface IUserCell extends IEditableCell {
   displayData?: string;
 }
 
+export interface IButtonCell extends IEditableCell {
+  type: CellType.Button;
+  data: {
+    cellValue: IButtonFieldCellValue;
+    fieldOptions: IButtonFieldOptions;
+    tableId: string;
+    statusHook?: IButtonClickStatusHook;
+  };
+}
+
 export type IInnerCell =
   | ITextCell
   | ILinkCell
@@ -163,7 +176,8 @@ export type IInnerCell =
   | IRatingCell
   | IBooleanCell
   | IChartCell
-  | IUserCell;
+  | IUserCell
+  | IButtonCell;
 
 export type ICell = IInnerCell | ILoadingCell;
 
@@ -206,6 +220,7 @@ export enum CellRegionType {
   Update = 'update',
   Preview = 'preview',
   ToggleEditing = 'toggleEditing',
+  Hover = 'hover',
 }
 
 export interface ICellRegionWithBlank {
@@ -213,7 +228,12 @@ export interface ICellRegionWithBlank {
 }
 
 export interface ICellRegionWithData {
-  type: CellRegionType.Update | CellRegionType.ToggleEditing | CellRegionType.Preview;
+  type:
+    | CellRegionType.Update
+    | CellRegionType.ToggleEditing
+    | CellRegionType.Preview
+    | CellRegionType.Blank
+    | CellRegionType.Hover;
   data: unknown;
 }
 

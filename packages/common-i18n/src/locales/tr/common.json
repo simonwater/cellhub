@@ -38,7 +38,9 @@
     "fieldSearch": "Alan Ara",
     "showAllRow": "Tüm satırları göster",
     "hideNotMatchRow": "Eşleşmeyen satırları gizle",
-    "move": "Taşı"
+    "move": "Taşı",
+    "turnOn": "Aç",
+    "exit": "Çıkış"
   },
   "quickAction": {
     "title": "Hızlı İşlemler...",
@@ -206,7 +208,7 @@
   },
   "help": {
     "title": "Yardım",
-    "apiLink": "https://help.teable.io/en/api-doc/token"
+    "apiLink": "https://help.teable.ai/en/api-doc/token"
   },
   "pagePermissionChangeTip": "Sayfa izinleri güncellendi. En son içeriği görmek için lütfen sayfayı yenileyin.",
   "listEmptyTips": "Liste boş",
@@ -289,5 +291,8 @@
     "pluginEmpty": {
       "title": "Henüz Eklenti Yok"
     }
+  },
+  "automation": {
+    "turnOnTip": "Mevcut otomasyonu açmak istediğinizden emin misiniz?"
   }
 }

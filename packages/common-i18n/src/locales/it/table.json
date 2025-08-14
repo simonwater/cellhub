@@ -133,6 +133,16 @@
       "checkbox": {
         "title": "Fatto"
       },
+      "button": {
+        "title": "Pulsante",
+        "label": "Testo del pulsante",
+        "color": "Colore del pulsante",
+        "limitCount": "Limita conteggio clic",
+        "resetCount": "Consenti reimpostazione conteggio clic",
+        "maxCount": "Massimo di clic",
+        "automation": "Automazione",
+        "customAutomation": "Automazione personalizzata"
+      },
       "formula": {
         "title": "Calcolo",
         "formula": "Formula"
@@ -243,7 +253,7 @@
       "enableValidateFieldUnique": "Vieta valori duplicati",
       "enableValidateFieldNotNull": "Vieta valori non vuoti",
       "knowMore": "saperne di più",
-      "linkFieldKnowMoreLink": "https://help.teable.io/en/basic/field/advanced/link",
+      "linkFieldKnowMoreLink": "https://help.teable.ai/en/basic/field/advanced/link",
       "showByField": "Mostra record per campo",
       "filterByView": "Filtra record per vista",
       "filter": "Filtra record",
@@ -393,8 +403,8 @@
       "repair": "ripara",
       "repairTip": "Rilevate anomalie nell'indice, che possono causare un degrado delle prestazioni di ricerca. Si consiglia di cliccare sul pulsante di riparazione per correggere l'indice",
       "enableIndexTip": "Stai creando un indice. Il tempo richiesto dipende dalla dimensione della tabella. Durante questo processo, le prestazioni di lettura e scrittura della tabella potrebbero essere influenzate. Si prega di essere pazienti.",
-      "globalSearchTip_infinity": "Cerca in tutti i campi tranne il campo data e casella di controllo",
-      "globalSearchTip_limited": "Cerca in tutti i campi tranne il campo data e casella di controllo, massimo {{count}} campi",
+      "globalSearchTip_infinity": "Cerca in tutti i campi tranne i campi data, casella di controllo e pulsante",
+      "globalSearchTip_limited": "Cerca in tutti i campi tranne i campi data, casella di controllo e pulsante, massimo {{count}} campi",
       "autoIndexTip": "La tua tabella ha superato {{rowCount}} righe. Si consiglia di abilitare l'indicizzazione per migliorare le prestazioni di ricerca. Si prega di notare che l'indicizzazione può ridurre leggermente la velocità di scrittura. Durante la creazione dell'indice, le prestazioni di lettura/scrittura della tabella potrebbero essere temporaneamente influenzate. Si prega di essere pazienti.",
       "enableIndex": "abilita",
       "keepAsIs": "mantieni così com'è"
@@ -562,7 +572,7 @@
     "noPermission": "Non hai il permesso di accedere al database",
     "connectionCountTip": "Il numero massimo di connessioni al database è <b>{{max}}</b> e le connessioni attuali sono <b>{{current}}</b>",
     "createFailed": "Assicurati che la variabile d'ambiente PUBLIC_DATABASE_PROXY sia impostata correttamente",
-    "helpLink": "https://help.teable.io/en/deploy/database-connection"
+    "helpLink": "https://help.teable.ai/en/deploy/database-connection"
   },
   "view": {
     "addRecord": "Aggiungi record",
@@ -586,7 +596,7 @@
     },
     "crash": {
       "title": "Errore!",
-      "description": "Questa vista è danneggiata. Se il refresh fallisce ancora, contattaci. support@teable.io"
+      "description": "Questa vista è danneggiata. Se il refresh fallisce ancora, contattaci. support@teable.ai"
     },
     "addPluginView": "Aggiungi Vista Plugin",
     "search": {

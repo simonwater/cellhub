@@ -131,6 +131,16 @@
       "checkbox": {
         "title": "完了"
       },
+      "button": {
+        "title": "ボタン",
+        "label": "ボタンラベル",
+        "color": "ボタンカラー",
+        "limitCount": "クリック数制限",
+        "resetCount": "クリック数のリセットを許可",
+        "maxCount": "最大クリック数",
+        "automation": "自動化",
+        "customAutomation": "カスタマイズされた自動化"
+      },
       "formula": {
         "title": "計算",
         "formula": "式"
@@ -234,7 +244,7 @@
       "enableValidateFieldUnique": "固有の値の検証を有効にする",
       "enableValidateFieldNotNull": "NULLでない値の検証を有効にする",
       "knowMore": "さらに詳しく",
-      "linkFieldKnowMoreLink": "https://help.teable.io/en/basic/field/advanced/link",
+      "linkFieldKnowMoreLink": "https://help.teable.ai/en/basic/field/advanced/link",
       "showByField": "フィールドでレコードを表示する",
       "filterByView": "ビューでレコードをフィルターする",
       "filter": "レコードをフィルターする",
@@ -384,8 +394,8 @@
       "repair": "修復",
       "repairTip": "インデックスの異常が検出され、検索パフォーマンスが低下する可能性があります。修復ボタンをクリックしてインデックスを修正することをお勧めします。",
       "enableIndexTip": "インデックスを作成しています。所要時間はテーブルのサイズによって異なります。このプロセス中、テーブルの読み取りと書き込みのパフォーマンスに影響が出る可能性があります。しばらくお待ちください。",
-      "globalSearchTip_infinity": "日付とチェックボックスフィールドを除くすべてのフィールドを検索",
-      "globalSearchTip_limited": "日付とチェックボックスフィールドを除くすべてのフィールドを検索, 最大 {{count}} フィールド",
+      "globalSearchTip_infinity": "日付、チェックボックス、ボタンフィールドを除くすべてのフィールドを検索",
+      "globalSearchTip_limited": "日付、チェックボックス、ボタンフィールドを除くすべてのフィールドを検索, 最大 {{count}} フィールド",
       "autoIndexTip": "テーブルが{{rowCount}}行を超えました。検索パフォーマンスを向上させるため、インデックスの有効化をお勧めします。なお、インデックスを有効にすると書き込み速度が若干低下する可能性があります。インデックス作成中は、テーブルの読み取り/書き込みパフォーマンスが一時的に影響を受ける可能性があります。しばらくお待ちください。",
       "enableIndex": "有効にする",
       "keepAsIs": "現状のまま"
@@ -549,7 +559,7 @@
     "noPermission": "データベースにアクセスする権限がありません",
     "connectionCountTip": "データベース接続の最大数は <b>{{max}}</b> で、現在の接続数は <b>{{current}}</b> です",
     "createFailed": "PUBLIC_DATABASE_PROXY 環境変数が正しく設定されていることを確認してください",
-    "helpLink": "https://help.teable.io/en/deploy/database-connection"
+    "helpLink": "https://help.teable.ai/en/deploy/database-connection"
   },
   "view": {
     "addRecord": "レコードを追加",
@@ -573,7 +583,7 @@
     },
     "crash": {
       "title": "クラッシュしました！",
-      "description": "このビューは壊れています。それでも更新が失敗する場合は、お問い合わせください。support@teable.io"
+      "description": "このビューは壊れています。それでも更新が失敗する場合は、お問い合わせください。support@teable.ai"
     },
     "locked": {
       "tip": "このビューはロックされています。個人モードを有効にしてビューオプションを編集し、変更は自分にのみ適用されます。"

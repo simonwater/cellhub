@@ -45,7 +45,9 @@
     "more": "更多",
     "expand": "展开",
     "deleteTip": "确定要删除 \"{{name}}\" 吗？",
-    "move": "移动至"
+    "move": "移动至",
+    "turnOn": "开启",
+    "exit": "退出"
   },
   "quickAction": {
     "title": "快捷搜索...",
@@ -170,6 +172,20 @@
           "desc": "您将在2秒内重定向到登录页面。",
           "sendSuccess": "验证码发送成功。"
         }
+      },
+      "deleteAccount": {
+        "title": "删除账户",
+        "desc": "以下操作是不可逆的，请谨慎操作",
+        "error": {
+          "title": "无法删除账户",
+          "desc": "您需要先处理以下依赖资源：",
+          "spacesError": "在删除账户之前，您需要退出您的空间（或删除然后去回收站彻底删除）。"
+        },
+        "confirm": {
+          "title": "请输入 <code>DELETE</code> 来确认",
+          "placeholder": "DELETE"
+        },
+        "loading": "删除中..."
       }
     },
     "notify": {
@@ -457,5 +473,8 @@
     "pluginEmpty": {
       "title": "暂无插件"
     }
+  },
+  "automation": {
+    "turnOnTip": "您是否要开启当前自动化？"
   }
 }

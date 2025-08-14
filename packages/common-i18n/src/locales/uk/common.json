@@ -35,7 +35,9 @@
     "restore": "Відновити",
     "permanentDelete": "Видалити назавжди",
     "more": "Більше",
-    "move": "Перемістити в"
+    "move": "Перемістити в",
+    "turnOn": "Увімкнути",
+    "exit": "Вийти"
   },
   "quickAction": {
     "title": "Швидкі дії...",
@@ -229,7 +231,7 @@
   },
   "help": {
     "title": "Допомога",
-    "apiLink": "https://help.teable.io/en/api-doc/token"
+    "apiLink": "https://help.teable.ai/en/api-doc/token"
   },
   "pagePermissionChangeTip": "Дозволи сторінки оновлено. Будь ласка, оновіть сторінку, щоб побачити найновіший вміст.",
   "listEmptyTips": "Список порожній",
@@ -366,5 +368,8 @@
     "pluginEmpty": {
       "title": "Плагінів ще немає"
     }
+  },
+  "automation": {
+    "turnOnTip": "Ви впевнені, що хочете увімкнути поточну автоматизацію?"
   }
 }
