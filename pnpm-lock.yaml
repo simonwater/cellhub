@@ -6,10 +6,17 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      prettier:
+        specifier: 3.2.5
+        version: 3.2.5
 
   apps/nestjs-backend:
     dependencies:
+      '@ai-sdk/amazon-bedrock':
+        specifier: 2.2.12
+        version: 2.2.12(zod@3.23.8)
       '@ai-sdk/anthropic':
         specifier: 1.2.11
         version: 1.2.11(zod@3.23.8)
@@ -40,6 +47,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: 3.609.0
         version: 3.609.0
+      '@aws-sdk/lib-storage':
+        specifier: 3.609.0
+        version: 3.609.0(@aws-sdk/client-s3@3.609.0)
       '@aws-sdk/s3-request-presigner':
         specifier: 3.609.0
         version: 3.609.0
@@ -506,6 +516,9 @@ importers:
       rimraf:
         specifier: 5.0.5
         version: 5.0.5
+      swc-loader:
+        specifier: 0.2.6
+        version: 0.2.6(@swc/core@1.13.3)(webpack@5.91.0(@swc/core@1.13.3)(esbuild@0.23.0))
       symlink-dir:
         specifier: 5.2.1
         version: 5.2.1
@@ -2448,6 +2461,12 @@ packages:
   '@adobe/css-tools@4.4.1':
     resolution: {integrity: sha512-12WGKBQzjUAI4ayyF4IAtfw2QR/IDoqk6jTddXDhtYTJF9ASmoE1zst7cVtP0aL/F1jUJL5r+JxKXKEgHNbEUQ==}
 
+  '@ai-sdk/amazon-bedrock@2.2.12':
+    resolution: {integrity: sha512-m8gARnh45pr1s08Uu4J/Pm8913mwJPejPOm59b+kUqMsP9ilhUtH/bp8432Ra/v+vHuMoBrglG2ZvXtctAaH2g==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.0.0
+
   '@ai-sdk/anthropic@1.2.11':
     resolution: {integrity: sha512-lZLcEMh8MXY4NVSrN/7DyI2rnid8k7cn/30nMmd3bwJrnIsOuIuuFvY8f0nj+pFcTi6AYK7ujLdqW5dQVz1YQw==}
     engines: {node: '>=18'}
@@ -2850,6 +2869,12 @@ packages:
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@aws-sdk/client-sts': ^3.609.0
+
+  '@aws-sdk/lib-storage@3.609.0':
+    resolution: {integrity: sha512-572EZF6x9PtDfRbRAlBx1ZNpolA6Ol3kUmZZT6lStMTsgLiAss7lJlp35eAdPTUMIREcY9E2hEbI7imPS2506g==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      '@aws-sdk/client-s3': ^3.609.0
 
   '@aws-sdk/middleware-bucket-endpoint@3.609.0':
     resolution: {integrity: sha512-QhHRfr4e7FqaMUAnOAFdQVOR3yDLw40i1IZPo+TeiKyev9LEyYEX2l6DbdaIwAztofOpAxfFNj/IJ0V/efzz/w==}
@@ -7177,6 +7202,10 @@ packages:
   '@smithy/eventstream-codec@3.1.10':
     resolution: {integrity: sha512-323B8YckSbUH0nMIpXn7HZsAVKHYHFUODa8gG9cHo0ySvA1fr5iWaNT+iIL0UCqUzG6QPHA3BSsBtRQou4mMqQ==}
 
+  '@smithy/eventstream-codec@4.0.5':
+    resolution: {integrity: sha512-miEUN+nz2UTNoRYRhRqVTJCx7jMeILdAurStT2XoS+mhokkmz1xAPp95DFW9Gxt4iF2VBqpeF9HbTQ3kY1viOA==}
+    engines: {node: '>=18.0.0'}
+
   '@smithy/eventstream-serde-browser@3.0.14':
     resolution: {integrity: sha512-kbrt0vjOIihW3V7Cqj1SXQvAI5BR8SnyQYsandva0AOR307cXAc+IhPngxIPslxTLfxwDpNu0HzCAq6g42kCPg==}
     engines: {node: '>=16.0.0'}
@@ -7220,6 +7249,10 @@ packages:
   '@smithy/is-array-buffer@3.0.0':
     resolution: {integrity: sha512-+Fsu6Q6C4RSJiy81Y8eApjEB5gVtM+oFKTffg+jSuwtvomJJrhUJBu2zS8wjXSgH/g1MKEWrzyChTBe6clb5FQ==}
     engines: {node: '>=16.0.0'}
+
+  '@smithy/is-array-buffer@4.0.0':
+    resolution: {integrity: sha512-saYhF8ZZNoJDTvJBEWgeBccCg+yvp1CX+ed12yORU3NilJScfc6gfch2oVb4QgxZrGUx3/ZJlb+c/dJbyupxlw==}
+    engines: {node: '>=18.0.0'}
 
   '@smithy/md5-js@3.0.11':
     resolution: {integrity: sha512-3NM0L3i2Zm4bbgG6Ymi9NBcxXhryi3uE8fIfHJZIOfZVxOkGdjdgjR9A06SFIZCfnEIWKXZdm6Yq5/aPXFFhsQ==}
@@ -7288,6 +7321,10 @@ packages:
     resolution: {integrity: sha512-bNwBYYmN8Eh9RyjS1p2gW6MIhSO2rl7X9QeLM8iTdcGRP+eDiIWDt66c9IysCc22gefKszZv+ubV9qZc7hdESg==}
     engines: {node: '>=16.0.0'}
 
+  '@smithy/types@4.3.2':
+    resolution: {integrity: sha512-QO4zghLxiQ5W9UZmX2Lo0nta2PuE1sSrXUYDoaB6HMR762C0P7v/HEPHf6ZdglTVssJG1bsrSBxdc3quvDSihw==}
+    engines: {node: '>=18.0.0'}
+
   '@smithy/url-parser@3.0.11':
     resolution: {integrity: sha512-TmlqXkSk8ZPhfc+SQutjmFr5FjC0av3GZP4B/10caK1SbRwe/v+Wzu/R6xEKxoNqL+8nY18s1byiy6HqPG37Aw==}
 
@@ -7310,6 +7347,10 @@ packages:
     resolution: {integrity: sha512-aEOHCgq5RWFbP+UDPvPot26EJHjOC+bRgse5A8V3FSShqd5E5UN4qc7zkwsvJPPAVsf73QwYcHN1/gt/rtLwQA==}
     engines: {node: '>=16.0.0'}
 
+  '@smithy/util-buffer-from@4.0.0':
+    resolution: {integrity: sha512-9TOQ7781sZvddgO8nxueKi3+yGvkY35kotA0Y6BWRajAv8jjmigQ1sBwz0UX47pQMYXJPahSKEKYFgt+rXdcug==}
+    engines: {node: '>=18.0.0'}
+
   '@smithy/util-config-provider@3.0.0':
     resolution: {integrity: sha512-pbjk4s0fwq3Di/ANL+rCvJMKM5bzAQdE5S/6RL5NXgMExFAi6UgQMPOm5yPaIWPpr+EOXKXRonJ3FoxKf4mCJQ==}
     engines: {node: '>=16.0.0'}
@@ -7329,6 +7370,10 @@ packages:
   '@smithy/util-hex-encoding@3.0.0':
     resolution: {integrity: sha512-eFndh1WEK5YMUYvy3lPlVmYY/fZcQE1D8oSf41Id2vCeIkKJXPcYDCZD+4+xViI6b1XSd7tE+s5AmXzz5ilabQ==}
     engines: {node: '>=16.0.0'}
+
+  '@smithy/util-hex-encoding@4.0.0':
+    resolution: {integrity: sha512-Yk5mLhHtfIgW2W2WQZWSg5kuMZCVbvhFmC7rV4IO2QqnZdbEFPmQnCcGMAX2z/8Qj3B9hYYNjZOhWym+RwhePw==}
+    engines: {node: '>=18.0.0'}
 
   '@smithy/util-middleware@3.0.11':
     resolution: {integrity: sha512-dWpyc1e1R6VoXrwLoLDd57U1z6CwNSdkM69Ie4+6uYh2GC7Vg51Qtan7ITzczuVpqezdDTKJGJB95fFvvjU/ow==}
@@ -7353,6 +7398,10 @@ packages:
   '@smithy/util-utf8@3.0.0':
     resolution: {integrity: sha512-rUeT12bxFnplYDe815GXbq/oixEGHfRFFtcTF3YdDi/JaENIM6aSYYLJydG83UNzLXeRI5K8abYd/8Sp/QM0kA==}
     engines: {node: '>=16.0.0'}
+
+  '@smithy/util-utf8@4.0.0':
+    resolution: {integrity: sha512-b+zebfKCfRdgNJDknHCob3O7FpeYQN6ZG6YLExMcasDHsCXlsXCEuiPZeLnJLpwa5dvPetGlnGCiMHuLwGvFow==}
+    engines: {node: '>=18.0.0'}
 
   '@smithy/util-waiter@3.2.0':
     resolution: {integrity: sha512-PpjSboaDUE6yl+1qlg3Si57++e84oXdWGbuFUSAciXsVfEZJJJupR2Nb0QuXHiunt2vGR+1PTizOMvnUPaG2Qg==}
@@ -9474,6 +9523,9 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
+  aws4fetch@1.0.20:
+    resolution: {integrity: sha512-/djoAN709iY65ETD6LKCtyyEI04XIBP5xVvfmNxsEP0uJB5tyaGBztSryRr4HqMStr9R06PisQE7m9zDTXKu6g==}
+
   axe-core@4.7.0:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
@@ -9730,6 +9782,9 @@ packages:
 
   buffer@4.9.2:
     resolution: {integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==}
+
+  buffer@5.6.0:
+    resolution: {integrity: sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==}
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -17333,6 +17388,9 @@ packages:
   stream-browserify@2.0.2:
     resolution: {integrity: sha512-nX6hmklHs/gr2FuxYDltq8fJA1GDlxKQCz8O/IM4atRqBH8OORmBNgfvW5gG10GT/qQ9u0CzIvr2X5Pkt6ntqg==}
 
+  stream-browserify@3.0.0:
+    resolution: {integrity: sha512-H73RAHsVBapbim0tU2JwwOiXUj+fikfiaoYAKHF3VJfA0pe2BCzkhAHBlLG6REzE+2WNZcxOXjK7lkso+9euLA==}
+
   stream-chain@2.2.5:
     resolution: {integrity: sha512-1TJmBx6aSWqZ4tx7aTpBDXK0/e2hhcNSTV8+CbFJtDjbb+I1mZ8lHit0Grw9GRT+6JbIrrDd8esncgBi8aBXGA==}
 
@@ -17560,6 +17618,12 @@ packages:
 
   swagger-ui-dist@5.11.2:
     resolution: {integrity: sha512-jQG0cRgJNMZ7aCoiFofnoojeSaa/+KgWaDlfgs8QN+BXoGMpxeMVY5OEnjq4OlNvF3yjftO8c9GRAgcHlO+u7A==}
+
+  swc-loader@0.2.6:
+    resolution: {integrity: sha512-9Zi9UP2YmDpgmQVbyOPJClY0dwf58JDyDMQ7uRc4krmc72twNI2fvlBWHLqVekBpPc7h5NJkGVT1zNDxFrqhvg==}
+    peerDependencies:
+      '@swc/core': ^1.2.147
+      webpack: '>=2'
 
   swr@2.3.2:
     resolution: {integrity: sha512-RosxFpiabojs75IwQ316DGoDRmOqtiAj0tg8wCcbEu4CiLZBs/a9QNtHV7TUfDXmmlgqij/NqzKq/eLelyv9xA==}
@@ -18955,6 +19019,15 @@ snapshots:
 
   '@adobe/css-tools@4.4.1': {}
 
+  '@ai-sdk/amazon-bedrock@2.2.12(zod@3.23.8)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.23.8)
+      '@smithy/eventstream-codec': 4.0.5
+      '@smithy/util-utf8': 4.0.0
+      aws4fetch: 1.0.20
+      zod: 3.23.8
+
   '@ai-sdk/anthropic@1.2.11(zod@3.23.8)':
     dependencies:
       '@ai-sdk/provider': 1.1.3
@@ -19775,6 +19848,17 @@ snapshots:
       '@aws-sdk/types': 3.609.0
       '@smithy/property-provider': 3.1.11
       '@smithy/types': 3.7.2
+      tslib: 2.8.1
+
+  '@aws-sdk/lib-storage@3.609.0(@aws-sdk/client-s3@3.609.0)':
+    dependencies:
+      '@aws-sdk/client-s3': 3.609.0
+      '@smithy/abort-controller': 3.1.9
+      '@smithy/middleware-endpoint': 3.2.5
+      '@smithy/smithy-client': 3.5.0
+      buffer: 5.6.0
+      events: 3.3.0
+      stream-browserify: 3.0.0
       tslib: 2.8.1
 
   '@aws-sdk/middleware-bucket-endpoint@3.609.0':
@@ -24544,6 +24628,13 @@ snapshots:
       '@smithy/util-hex-encoding': 3.0.0
       tslib: 2.8.1
 
+  '@smithy/eventstream-codec@4.0.5':
+    dependencies:
+      '@aws-crypto/crc32': 5.2.0
+      '@smithy/types': 4.3.2
+      '@smithy/util-hex-encoding': 4.0.0
+      tslib: 2.8.1
+
   '@smithy/eventstream-serde-browser@3.0.14':
     dependencies:
       '@smithy/eventstream-serde-universal': 3.0.13
@@ -24613,6 +24704,10 @@ snapshots:
       tslib: 2.8.1
 
   '@smithy/is-array-buffer@3.0.0':
+    dependencies:
+      tslib: 2.8.1
+
+  '@smithy/is-array-buffer@4.0.0':
     dependencies:
       tslib: 2.8.1
 
@@ -24730,6 +24825,10 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@smithy/types@4.3.2':
+    dependencies:
+      tslib: 2.8.1
+
   '@smithy/url-parser@3.0.11':
     dependencies:
       '@smithy/querystring-parser': 3.0.11
@@ -24758,6 +24857,11 @@ snapshots:
   '@smithy/util-buffer-from@3.0.0':
     dependencies:
       '@smithy/is-array-buffer': 3.0.0
+      tslib: 2.8.1
+
+  '@smithy/util-buffer-from@4.0.0':
+    dependencies:
+      '@smithy/is-array-buffer': 4.0.0
       tslib: 2.8.1
 
   '@smithy/util-config-provider@3.0.0':
@@ -24789,6 +24893,10 @@ snapshots:
       tslib: 2.8.1
 
   '@smithy/util-hex-encoding@3.0.0':
+    dependencies:
+      tslib: 2.8.1
+
+  '@smithy/util-hex-encoding@4.0.0':
     dependencies:
       tslib: 2.8.1
 
@@ -24826,6 +24934,11 @@ snapshots:
   '@smithy/util-utf8@3.0.0':
     dependencies:
       '@smithy/util-buffer-from': 3.0.0
+      tslib: 2.8.1
+
+  '@smithy/util-utf8@4.0.0':
+    dependencies:
+      '@smithy/util-buffer-from': 4.0.0
       tslib: 2.8.1
 
   '@smithy/util-waiter@3.2.0':
@@ -27832,6 +27945,8 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
+  aws4fetch@1.0.20: {}
+
   axe-core@4.7.0: {}
 
   axios@0.21.4:
@@ -28213,6 +28328,11 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
       isarray: 1.0.0
+
+  buffer@5.6.0:
+    dependencies:
+      base64-js: 1.5.1
+      ieee754: 1.2.1
 
   buffer@5.7.1:
     dependencies:
@@ -38081,6 +38201,11 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 2.3.8
 
+  stream-browserify@3.0.0:
+    dependencies:
+      inherits: 2.0.4
+      readable-stream: 3.6.2
+
   stream-chain@2.2.5: {}
 
   stream-each@1.2.3:
@@ -38336,6 +38461,12 @@ snapshots:
       picocolors: 1.0.0
 
   swagger-ui-dist@5.11.2: {}
+
+  swc-loader@0.2.6(@swc/core@1.13.3)(webpack@5.91.0(@swc/core@1.13.3)(esbuild@0.23.0)):
+    dependencies:
+      '@swc/core': 1.13.3(@swc/helpers@0.5.5)
+      '@swc/counter': 0.1.3
+      webpack: 5.91.0(@swc/core@1.13.3)(esbuild@0.23.0)
 
   swr@2.3.2(react@18.3.1):
     dependencies:

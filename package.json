@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev:nestjs": "pnpm --filter nestjs-backend dev",
+    "dev:nestjs": "pnpm --filter backend dev",
     "dev:backend": "pnpm --filter backend start:dev",
     "dev:web": "pnpm --filter web dev",
     "build:backend": "pnpm --filter backend build",
@@ -13,6 +13,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "prettier": "3.2.5"
+  },
   "engines": {
     "node": ">=20.0.0",
     "pnpm": ">=9.13.0",

@@ -34,6 +34,7 @@ export class NextController {
     'developer/?*',
     'public/?*',
     'enterprise/?*',
+    'demo/?*',
   ])
   public async home(@Req() req: express.Request, @Res() res: express.Response) {
     await this.nextService.server.getRequestHandler()(req, res);
@@ -41,7 +42,8 @@ export class NextController {
 
   @Post('api/query-params')
   async saveQueryParams(
-    @Body(new ZodValidationPipe(queryParamsRoSchema)) saveQueryParamsRo: IQueryParamsRo
+    @Body(new ZodValidationPipe(queryParamsRoSchema))
+    saveQueryParamsRo: IQueryParamsRo
   ): Promise<IQueryParamsVo> {
     return await this.nextService.saveQueryParams(saveQueryParamsRo);
   }
