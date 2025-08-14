@@ -22,6 +22,7 @@ import type {
   IUseTablePermissionAction,
   IRange,
   Record,
+  IButtonCell,
 } from '@teable/sdk';
 import {
   Grid,
@@ -75,6 +76,7 @@ import {
   useView,
   useViewId,
   useRecordOperations,
+  useButtonClickStatus,
 } from '@teable/sdk/hooks';
 import { ConfirmDialog, useToast } from '@teable/ui-lib';
 import { toast as sonnerToast } from '@teable/ui-lib/shadcn/ui/sonner';
@@ -94,6 +96,7 @@ import { useFieldSettingStore } from '../field/useFieldSettingStore';
 import { AiGenerateButton, PrefillingRowContainer, PresortRowContainer } from './components';
 import type { IConfirmNewRecordsRef } from './components/ConfirmNewRecords';
 import { ConfirmNewRecords } from './components/ConfirmNewRecords';
+import { ResetClickCountButton } from './components/ResetClickCountButton';
 import { GIRD_FIELD_NAME_HEIGHT_DEFINITIONS, GIRD_ROW_HEIGHT_DEFINITIONS } from './const';
 import { DomBox } from './DomBox';
 import { useCollaborate, useSelectionOperation } from './hooks';
@@ -127,6 +130,7 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
   const usage = useBaseUsage();
   const allFields = useFields({ withHidden: true });
   const taskStatusCollection = useContext(TaskStatusCollectionContext);
+  const buttonClickStatusHook = useButtonClickStatus(tableId);
   const { columns: originalColumns, cellValue2GridDisplay } = useGridColumns();
   const { columns, onColumnResize } = useGridColumnResize(originalColumns);
   const { columnStatistics } = useGridColumnStatistics(columns);
@@ -164,6 +168,9 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
   const { fieldAIEnable = false } = usage?.limit ?? {};
 
   const aiGenerateButtonRef = useRef<{
+    onScrollHandler: () => void;
+  }>(null);
+  const resetClickCountButtonRef = useRef<{
     onScrollHandler: () => void;
   }>(null);
 
@@ -343,13 +350,17 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
       if (record !== undefined) {
         const fieldId = columns[colIndex]?.id;
         if (!fieldId) return { type: CellType.Loading };
-        return cellValue2GridDisplay(record, colIndex, false, (tableId, recordId) =>
-          setExpandRecord({ tableId, recordId })
+        return cellValue2GridDisplay(
+          record,
+          colIndex,
+          false,
+          (tableId, recordId) => setExpandRecord({ tableId, recordId }),
+          buttonClickStatusHook
         );
       }
       return { type: CellType.Loading };
     },
-    [recordMap, columns, cellValue2GridDisplay]
+    [recordMap, columns, cellValue2GridDisplay, buttonClickStatusHook]
   );
 
   const onCellEdited = useCallback(
@@ -748,6 +759,29 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
 
   const componentId = useMemo(() => uniqueId('grid-view-'), []);
 
+  const onCellValueHovered = (bounds: IRectangle, cellItem: ICellItem) => {
+    const cellInfo = getCellContent(cellItem);
+    if (!cellInfo?.id) {
+      return;
+    }
+
+    if (cellInfo.type === CellType.Button) {
+      const { data } = cellInfo as IButtonCell;
+      const { fieldOptions, cellValue } = data;
+      const { label } = fieldOptions;
+      const count = cellValue?.count ?? 0;
+      const maxCount = fieldOptions?.maxCount ?? 0;
+      openTooltip({
+        id: componentId,
+        text: t('sdk:common.clickedCount', {
+          label,
+          text: maxCount > 0 ? `${count}/${maxCount}` : `${count}`,
+        }),
+        position: bounds,
+      });
+    }
+  };
+
   const onItemHovered = (type: RegionType, bounds: IRectangle, cellItem: ICellItem) => {
     const [columnIndex] = cellItem;
     const { description } = columns[columnIndex] ?? {};
@@ -820,6 +854,10 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
           },
         });
     }
+
+    if (type === RegionType.CellValue) {
+      onCellValueHovered(bounds, cellItem);
+    }
   };
 
   const draggable = useMemo(() => {
@@ -851,6 +889,7 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
   const onGridScrollChanged = useCallback((sl?: number, _st?: number) => {
     prefillingGridRef.current?.scrollTo(sl, undefined);
     aiGenerateButtonRef.current?.onScrollHandler();
+    resetClickCountButtonRef.current?.onScrollHandler();
   }, []);
 
   const onPrefillingGridScrollChanged = useCallback((sl?: number, _st?: number) => {
@@ -1044,6 +1083,14 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
           recordMap={recordMap}
         />
       )}
+      {activeCell && (
+        <ResetClickCountButton
+          ref={resetClickCountButtonRef}
+          gridRef={gridRef}
+          activeCell={activeCell}
+          recordMap={recordMap}
+        />
+      )}
       {inPrefilling && (
         <PrefillingRowContainer
           style={prefillingRowStyle}
@@ -1119,7 +1166,13 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
       )}
       <RowCounter rowCount={realRowCount} className="absolute bottom-3 left-0" />
       <DomBox id={componentId} />
-      {!onRowExpand && <ExpandRecordContainer ref={expandRecordRef} recordServerData={ssrRecord} />}
+      {!onRowExpand && (
+        <ExpandRecordContainer
+          ref={expandRecordRef}
+          recordServerData={ssrRecord}
+          buttonClickStatusHook={buttonClickStatusHook}
+        />
+      )}
       {expandRecord != null && (
         <ExpandRecorder
           tableId={expandRecord.tableId}
@@ -1127,6 +1180,7 @@ export const GridViewBaseInner: React.FC<IGridViewBaseInnerProps> = (
           recordId={expandRecord.recordId}
           recordIds={[expandRecord.recordId]}
           onClose={() => setExpandRecord(undefined)}
+          buttonClickStatusHook={buttonClickStatusHook}
         />
       )}
       <ConfirmNewRecords

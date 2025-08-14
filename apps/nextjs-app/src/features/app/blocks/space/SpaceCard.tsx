@@ -1,28 +1,19 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Role } from "@teable/core";
-import type {
-  IGetBaseVo,
-  IGetSpaceVo,
-  ISubscriptionSummaryVo,
-} from "@teable/openapi";
-import { PinType, deleteSpace, updateSpace } from "@teable/openapi";
-import { ReactQueryKeys } from "@teable/sdk/config";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@teable/ui-lib/shadcn";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
-import { type FC, useEffect, useState } from "react";
-import { spaceConfig } from "@/features/i18n/space.config";
-import { LevelWithUpgrade } from "../../components/billing/LevelWithUpgrade";
-import { SpaceActionBar } from "../../components/space/SpaceActionBar";
-import { SpaceRenaming } from "../../components/space/SpaceRenaming";
-import { useIsCloud } from "../../hooks/useIsCloud";
-import { DraggableBaseGrid } from "./DraggableBaseGrid";
-import { StarButton } from "./space-side-bar/StarButton";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Role } from '@teable/core';
+import type { IGetBaseVo, IGetSpaceVo, ISubscriptionSummaryVo } from '@teable/openapi';
+import { PinType, deleteSpace, updateSpace } from '@teable/openapi';
+import { ReactQueryKeys } from '@teable/sdk/config';
+import { Card, CardContent, CardHeader, CardTitle } from '@teable/ui-lib/shadcn';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { type FC, useEffect, useState } from 'react';
+import { spaceConfig } from '@/features/i18n/space.config';
+import { LevelWithUpgrade } from '../../components/billing/LevelWithUpgrade';
+import { SpaceActionBar } from '../../components/space/SpaceActionBar';
+import { SpaceRenaming } from '../../components/space/SpaceRenaming';
+import { useIsCloud } from '../../hooks/useIsCloud';
+import { DraggableBaseGrid } from './DraggableBaseGrid';
+import { StarButton } from './space-side-bar/StarButton';
 
 interface ISpaceCard {
   space: IGetSpaceVo;
@@ -50,17 +41,13 @@ export const SpaceCard: FC<ISpaceCard> = (props) => {
     mutationFn: updateSpace,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ReactQueryKeys.spaceList() });
-      queryClient.invalidateQueries({
-        queryKey: ReactQueryKeys.space(space.id),
-      });
+      queryClient.invalidateQueries({ queryKey: ReactQueryKeys.space(space.id) });
     },
   });
 
   useEffect(() => setSpaceName(space?.name), [renaming, space?.name]);
 
-  const toggleUpdateSpace = async (
-    e: React.FocusEvent<HTMLInputElement, Element>
-  ) => {
+  const toggleUpdateSpace = async (e: React.FocusEvent<HTMLInputElement, Element>) => {
     const name = e.target.value;
     if (!name || name === space.name) {
       setRenaming(false);
@@ -76,7 +63,7 @@ export const SpaceCard: FC<ISpaceCard> = (props) => {
 
   const onSpaceSetting = () => {
     router.push({
-      pathname: "/space/[spaceId]/setting/general",
+      pathname: '/space/[spaceId]/setting/general',
       query: { spaceId: space.id },
     });
   };
@@ -96,11 +83,7 @@ export const SpaceCard: FC<ISpaceCard> = (props) => {
                 {space.name}
               </CardTitle>
             </SpaceRenaming>
-            <StarButton
-              className="opacity-100"
-              id={space.id}
-              type={PinType.Space}
-            />
+            <StarButton className="opacity-100" id={space.id} type={PinType.Space} />
             {isCloud && (
               <LevelWithUpgrade
                 level={subscription?.level}
@@ -111,9 +94,7 @@ export const SpaceCard: FC<ISpaceCard> = (props) => {
               />
             )}
             {!isCloud && space?.organization && (
-              <div className="text-sm text-gray-500">
-                {space.organization.name}
-              </div>
+              <div className="text-sm text-gray-500">{space.organization.name}</div>
             )}
           </div>
           <SpaceActionBar
@@ -133,7 +114,7 @@ export const SpaceCard: FC<ISpaceCard> = (props) => {
           <DraggableBaseGrid bases={bases} />
         ) : (
           <div className="flex h-24 w-full items-center justify-center">
-            {t("space:spaceIsEmpty")}
+            {t('space:spaceIsEmpty')}
           </div>
         )}
       </CardContent>

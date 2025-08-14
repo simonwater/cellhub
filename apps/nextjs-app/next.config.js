@@ -70,7 +70,7 @@ const tmModules = [
   // @link https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
   ...[
     // ie: newer versions of https://github.com/sindresorhus packages
-  ]
+  ],
 ];
 
 // @link https://github.com/jagaapple/next-secure-headers
@@ -86,6 +86,7 @@ const secureHeaders = createSecureHeaders({
           "'unsafe-inline'",
           'https://www.clarity.ms',
           'https://*.teable.io',
+          'https://*.teable.ai',
           'https://*.teable.cn',
         ],
         frameSrc: ["'self'", 'blob:', '*'],
@@ -93,6 +94,7 @@ const secureHeaders = createSecureHeaders({
           "'self'",
           'https://*.sentry.io',
           'https://*.teable.io',
+          'https://*.teable.ai',
           'https://*.teable.cn',
           'https://*.clarity.ms',
         ],
@@ -325,9 +327,9 @@ if (NEXT_BUILD_ENV_SENTRY_ENABLED === true) {
 
 // if (tmModules.length > 0) {
 //   console.info(`${pc.green('notice')}- Will transpile [${tmModules.join(',')}]`);
-//   const withTM = require('next-transpile-modules');
+//   const withNextTranspileModules = require('next-transpile-modules');
 
-//   config = withTM(tmModules, {
+//   config = withNextTranspileModules(tmModules, {
 //     resolveSymlinks: true,
 //     debug: false,
 //   })(config);
@@ -340,4 +342,4 @@ if (process.env.ANALYZE === 'true') {
   })(config);
 }
 
-module.exports = config
+module.exports = config;
