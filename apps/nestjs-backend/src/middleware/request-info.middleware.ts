@@ -15,8 +15,7 @@ export class RequestInfoMiddleware implements NestMiddleware {
     const referer = req.headers.referer || '';
     const authHeader = req.headers.authorization || '';
     const byApi = authHeader.toLowerCase().startsWith('bearer ');
-
-    const origin = {
+    const origin: IClsStore['origin'] = {
       ip: req.ip || req.socket.remoteAddress || '',
       byApi,
       userAgent,

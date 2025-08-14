@@ -1255,7 +1255,7 @@ export class RecordService {
             undefined,
             {
               'Content-Type': mimetype,
-              'Content-Disposition': `attachment; filename="${item.name}"`,
+              'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(item.name)}`,
             }
           ));
         let smThumbnailUrl: string | undefined;
@@ -1556,6 +1556,12 @@ export class RecordService {
               return false;
             }
             if (field.cellValueType === CellValueType.Boolean) {
+              return false;
+            }
+            return true;
+          })
+          .filter((field) => {
+            if (field.type === FieldType.Button) {
               return false;
             }
             return true;

@@ -1,12 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { IdPrefix, TableOpBuilder } from '@teable/core';
 import { PrismaService } from '@teable/db-main-prisma';
 import { Knex } from 'knex';
 import { InjectModel } from 'nest-knexjs';
-import { ClsService } from 'nestjs-cls';
-import { ShareDbService } from '../../share-db/share-db.service';
-import type { IClsStore } from '../../types/cls';
 import { isSQLite } from '../../utils/db-helpers';
 import type {
   FieldCreateEvent,
@@ -28,10 +24,10 @@ type ITableLastModifiedTimeEvent = IViewEvent | IRecordEvent | IFieldEvent;
 
 @Injectable()
 export class TableListener {
+  private readonly logger = new Logger(TableListener.name);
+
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly shareDbService: ShareDbService,
-    private readonly cls: ClsService<IClsStore>,
     @InjectModel('CUSTOM_KNEX') private readonly knex: Knex
   ) {}
 
@@ -42,54 +38,18 @@ export class TableListener {
     if (isSQLite(this.knex)) {
       return;
     }
+
     const tableId = await this.getTableId(event);
+    this.logger.log(`handleTableLastModifiedTimeEvent: ${tableId}`);
     if (!tableId) {
       return;
     }
-    const lastModifiedTime = new Date().toISOString();
-    const updatedTable = await this.prismaService.tableMeta.update({
+    await this.prismaService.tableMeta.update({
       where: { id: tableId, deletedTime: null },
       data: {
-        lastModifiedTime,
-        version: {
-          increment: 1,
-        },
-      },
-      select: {
-        baseId: true,
-        lastModifiedTime: true,
-        version: true,
+        lastModifiedTime: new Date().toISOString(),
       },
     });
-    if (!updatedTable) {
-      return;
-    }
-    const collection = `${IdPrefix.Table}_${updatedTable.baseId}`;
-    const baseRaw = {
-      src: this.cls.getId() || 'unknown',
-      seq: 1,
-      m: {
-        ts: Date.now(),
-      },
-    };
-
-    await this.shareDbService.publishOpsMap([
-      {
-        [collection]: {
-          [tableId]: {
-            ...baseRaw,
-            op: [
-              TableOpBuilder.editor.setTableProperty.build({
-                key: 'lastModifiedTime',
-                newValue: lastModifiedTime,
-                oldValue: null,
-              }),
-            ],
-            v: updatedTable.version - 1,
-          },
-        },
-      },
-    ]);
   }
 
   private async getTableId(event: ITableLastModifiedTimeEvent) {

@@ -6,18 +6,27 @@ import type {
   IRecord,
   ITablePropertyKey,
 } from '@teable/core';
-import { FieldOpBuilder, IdPrefix, RecordOpBuilder, TableOpBuilder } from '@teable/core';
-import { PrismaService } from '@teable/db-main-prisma';
+import {
+  FieldOpBuilder,
+  getRandomString,
+  IdPrefix,
+  RecordOpBuilder,
+  TableOpBuilder,
+} from '@teable/core';
 import type { ITableVo } from '@teable/openapi';
-import { Knex } from 'knex';
-import { InjectModel } from 'nest-knexjs';
 import { ClsService } from 'nestjs-cls';
 import type { CreateOp, DeleteOp, EditOp } from 'sharedb';
 import ShareDb from 'sharedb';
 import type { SnapshotMeta } from 'sharedb/lib/sharedb';
+import { TableService } from '../features/table/table.service';
 import type { IClsStore } from '../types/cls';
 import { exceptionParse } from '../utils/exception-parse';
-import type { ICreateOp, IDeleteOp, IEditOp, IShareDbReadonlyAdapterService } from './interface';
+import {
+  RawOpType,
+  type ICreateOp,
+  type IEditOp,
+  type IShareDbReadonlyAdapterService,
+} from './interface';
 import { FieldReadonlyServiceAdapter } from './readonly/field-readonly.service';
 import { RecordReadonlyServiceAdapter } from './readonly/record-readonly.service';
 import { TableReadonlyServiceAdapter } from './readonly/table-readonly.service';
@@ -43,8 +52,7 @@ export class ShareDbAdapter extends ShareDb.DB {
     private readonly recordService: RecordReadonlyServiceAdapter,
     private readonly fieldService: FieldReadonlyServiceAdapter,
     private readonly viewService: ViewReadonlyServiceAdapter,
-    private readonly prismaService: PrismaService,
-    @InjectModel('CUSTOM_KNEX') private readonly knex: Knex
+    private readonly tableServiceInner: TableService
   ) {
     super();
     this.closed = false;
@@ -245,6 +253,11 @@ export class ShareDbAdapter extends ShareDb.DB {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async getSnapshotData(docType: IdPrefix, collectionId: string, id: string, options: any) {
+    if (docType === IdPrefix.Table) {
+      return await this.tableServiceInner.getSnapshotBulk(collectionId, [id], {
+        ignoreDefaultViewId: true,
+      });
+    }
     const { cookie, shareId } = this.getCookieAndShareId(options);
     return await this.cls.runWith(
       {
@@ -281,31 +294,17 @@ export class ShareDbAdapter extends ShareDb.DB {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [docType, collectionId] = collection.split('_');
-      const version = await this.getReadonlyService(docType as IdPrefix).getVersion(
-        collectionId,
-        id
-      );
-      if (version < from) {
-        callback(null);
+      const { version, type } = await this.getReadonlyService(
+        docType as IdPrefix
+      ).getVersionAndType(collectionId, id);
+
+      if (type === RawOpType.Del) {
+        callback(null, []);
         return;
       }
 
-      const baseRaw = {
-        src: this.cls.getId() || 'unknown',
-        seq: 1,
-        m: {
-          ts: Date.now(),
-        },
-        v: version - 1,
-      };
-
-      if (version === 0) {
-        callback(null, [
-          {
-            ...baseRaw,
-            del: true,
-          } as IDeleteOp,
-        ]);
+      if (from > version) {
+        callback(null, []);
         return;
       }
 
@@ -321,7 +320,12 @@ export class ShareDbAdapter extends ShareDb.DB {
       }
 
       const { data } = snapshotData[0];
-      if (version === 1) {
+      const baseRaw = {
+        src: getRandomString(21),
+        seq: 1,
+        v: version,
+      };
+      if (type === RawOpType.Create) {
         callback(null, [
           {
             ...baseRaw,
@@ -333,14 +337,19 @@ export class ShareDbAdapter extends ShareDb.DB {
         ]);
         return;
       }
+
       const editOp = this.getOpsFromSnapshot(docType as IdPrefix, data);
-      const editOps = new Array(Math.min((to || baseRaw.v + 1) - from, 1)).fill(0).map((_, i) => {
+      const gapVersion = Math.max((to || baseRaw.v + 1) - from, 0);
+      const editOps = new Array(gapVersion).fill(0).map((_, i) => {
         return {
           ...baseRaw,
+          src: getRandomString(21),
           v: from + i,
-          op: editOp,
         } as IEditOp;
       });
+      if (gapVersion > 0) {
+        editOps[gapVersion - 1].op = editOp;
+      }
       callback(null, editOps);
     } catch (err) {
       this.logger.error(err);

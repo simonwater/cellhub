@@ -66,7 +66,7 @@ export class PluginService {
 
   private async getUserMap(userIds: string[]) {
     const users = await this.prismaService.txClient().user.findMany({
-      where: { id: { in: userIds }, deletedTime: null },
+      where: { id: { in: userIds } },
       select: {
         id: true,
         name: true,
@@ -78,7 +78,7 @@ export class PluginService {
       ? {
           id: 'system',
           name: 'Teable',
-          email: 'support@teable.io',
+          email: 'support@teable.ai',
           avatar: undefined,
         }
       : undefined;
@@ -89,7 +89,7 @@ export class PluginService {
           acc[user.id] = {
             id: user.id,
             name: 'Teable',
-            email: 'support@teable.io',
+            email: 'support@teable.ai',
             avatar: undefined,
           };
           return acc;

@@ -969,6 +969,7 @@ export class ReferenceService {
       const result = await this.prismaService
         .txClient()
         .$queryRawUnsafe<{ [dbFieldName: string]: unknown }[]>(nativeQuery);
+
       results[dbTableName] = result;
     }
 

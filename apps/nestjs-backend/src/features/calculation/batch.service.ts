@@ -392,7 +392,7 @@ export class BatchService {
 
     this.logger.verbose(`saveOp: ${baseRaw.src}-${collection}`);
 
-    dataList.forEach(({ docId: docId, version, data }) => {
+    dataList.forEach(({ docId, version, data }) => {
       let rawOp: IRawOp;
       if (opType === RawOpType.Create) {
         rawOp = {
@@ -419,6 +419,7 @@ export class BatchService {
         throw new Error('unknown raw op type');
       }
       rawOpMap[collection][docId] = rawOp;
+      return { rawOp, docId };
     });
 
     const prevMap = this.cls.get('tx.rawOpMaps') || [];

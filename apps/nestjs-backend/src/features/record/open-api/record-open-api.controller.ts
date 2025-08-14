@@ -9,12 +9,14 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type {
   IAutoFillCellVo,
+  IButtonClickVo,
   ICreateRecordsVo,
   IRecord,
   IRecordStatusVo,
@@ -216,5 +218,27 @@ export class RecordOpenApiController {
     @Param('fieldId') _fieldId: string
   ): Promise<IAutoFillCellVo> {
     return { taskId: '' };
+  }
+
+  @Permissions('record|read')
+  @Post(':recordId/:fieldId/button-click')
+  async buttonClick(
+    @Req() req: Express.Request,
+    @Param('tableId') tableId: string,
+    @Param('recordId') recordId: string,
+    @Param('fieldId') fieldId: string
+  ): Promise<IButtonClickVo> {
+    const result = await this.recordOpenApiService.buttonClick(tableId, recordId, fieldId);
+    return { ...result, runId: '' };
+  }
+
+  @Permissions('record|update')
+  @Post(':recordId/:fieldId/button-reset')
+  async buttonReset(
+    @Param('tableId') tableId: string,
+    @Param('recordId') recordId: string,
+    @Param('fieldId') fieldId: string
+  ): Promise<IRecord> {
+    return await this.recordOpenApiService.resetButton(tableId, recordId, fieldId);
   }
 }

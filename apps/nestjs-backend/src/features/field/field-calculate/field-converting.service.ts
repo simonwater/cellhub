@@ -44,11 +44,13 @@ import type { ICellContext } from '../../calculation/utils/changes';
 import { formatChangesToOps } from '../../calculation/utils/changes';
 import type { IOpsMap } from '../../calculation/utils/compose-maps';
 import { composeOpMaps } from '../../calculation/utils/compose-maps';
+import { isLinkCellValue } from '../../calculation/utils/detect-link';
 import { CollaboratorService } from '../../collaborator/collaborator.service';
 import { TableIndexService } from '../../table/table-index.service';
 import { FieldService } from '../field.service';
 import type { IFieldInstance, IFieldMap } from '../model/factory';
 import { createFieldInstanceByRaw, createFieldInstanceByVo } from '../model/factory';
+import type { ButtonFieldDto } from '../model/field-dto/button-field.dto';
 import { FormulaFieldDto } from '../model/field-dto/formula-field.dto';
 import type { LinkFieldDto } from '../model/field-dto/link-field.dto';
 import type { MultipleSelectFieldDto } from '../model/field-dto/multiple-select-field.dto';
@@ -693,6 +695,47 @@ export class FieldConvertingService {
     return await this.updateOptionsFromUserField(tableId, newField);
   }
 
+  private async updateOptionsFromButtonField(tableId: string, field: ButtonFieldDto) {
+    const { dbTableName } = await this.prismaService.txClient().tableMeta.findFirstOrThrow({
+      where: { id: tableId, deletedTime: null },
+      select: { dbTableName: true },
+    });
+
+    const opsMap: { [recordId: string]: IOtOperation[] } = {};
+    const nativeSql = this.knex(dbTableName)
+      .select('__id', field.dbFieldName)
+      .whereNotNull(field.dbFieldName);
+
+    const result = await this.prismaService
+      .txClient()
+      .$queryRawUnsafe<{ __id: string; [dbFieldName: string]: string }[]>(nativeSql.toQuery());
+    for (const row of result) {
+      const oldCellValue = field.convertDBValue2CellValue(row[field.dbFieldName]);
+      opsMap[row.__id] = [
+        RecordOpBuilder.editor.setRecord.build({
+          fieldId: field.id,
+          oldCellValue,
+          newCellValue: null,
+        }),
+      ];
+    }
+
+    return isEmpty(opsMap) ? undefined : { [tableId]: opsMap };
+  }
+
+  private async modifyButtonOptions(
+    tableId: string,
+    newField: ButtonFieldDto,
+    oldField: ButtonFieldDto
+  ) {
+    const oldWorkflow = oldField.options.workflow;
+    const newWorkflow = newField.options.workflow;
+
+    if (oldWorkflow?.id === newWorkflow?.id) return;
+
+    return await this.updateOptionsFromButtonField(tableId, newField);
+  }
+
   private async modifyOptions(
     tableId: string,
     newField: IFieldInstance,
@@ -731,6 +774,13 @@ export class FieldConvertingService {
           oldField as UserFieldDto
         );
       }
+      case FieldType.Button: {
+        return await this.modifyButtonOptions(
+          tableId,
+          newField as ButtonFieldDto,
+          oldField as ButtonFieldDto
+        );
+      }
     }
   }
 
@@ -750,22 +800,29 @@ export class FieldConvertingService {
 
   private async getDerivateByLink(tableId: string, innerOpsMap: IOpsMap['key']) {
     const changes: ICellContext[] = [];
+    let fromReset = true;
     for (const recordId in innerOpsMap) {
       for (const op of innerOpsMap[recordId]) {
         const context = RecordOpBuilder.editor.setRecord.detect(op);
         if (!context) {
           throw new Error('Invalid operation');
         }
+
+        // when changing link relationship, old value used to clean link cellValue
+        if (isLinkCellValue(context.oldCellValue)) {
+          fromReset = false;
+        }
+
         changes.push({
           recordId,
           fieldId: context.fieldId,
-          oldValue: null, // old value by no means when converting
+          oldValue: isLinkCellValue(context.oldCellValue) ? context.oldCellValue : null,
           newValue: context.newCellValue,
         });
       }
     }
 
-    const derivate = await this.linkService.getDerivateByLink(tableId, changes, true);
+    const derivate = await this.linkService.getDerivateByLink(tableId, changes, fromReset);
     const cellChanges = derivate?.cellChanges || [];
 
     const opsMapByLink = cellChanges.length ? formatChangesToOps(cellChanges) : {};

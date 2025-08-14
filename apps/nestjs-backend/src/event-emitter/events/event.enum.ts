@@ -23,6 +23,8 @@ export enum Events {
   TABLE_RECORD_DELETE = 'table.record.delete',
   TABLE_RECORD_UPDATE = 'table.record.update',
 
+  TABLE_BUTTON_CLICK = 'table.button.click',
+
   TABLE_VIEW_CREATE = 'table.view.create',
   TABLE_VIEW_DELETE = 'table.view.delete',
   TABLE_VIEW_UPDATE = 'table.view.update',
@@ -71,11 +73,9 @@ export enum Events {
   BASE_EXPORT_COMPLETE = 'base.export.complete',
 
   LAST_VISIT_CLEAR = 'last.visit.clear',
+  LAST_VISIT_UPDATE = 'last.visit.update',
 
   AUDIT_LOG_SAVED = 'audit-log.saved',
 
   IMPORT_TABLE_COMPLETE = 'import.table.complete',
-
-  UNDO = 'undo',
-  REDO = 'redo',
 }

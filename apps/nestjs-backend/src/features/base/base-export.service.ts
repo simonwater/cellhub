@@ -13,11 +13,13 @@ import { Knex } from 'knex';
 import { omit, pick } from 'lodash';
 import { InjectModel } from 'nest-knexjs';
 import { ClsService } from 'nestjs-cls';
+import { IStorageConfig, StorageConfig } from '../../configs/storage';
 import { InjectDbProvider } from '../../db-provider/db.provider';
 import { IDbProvider } from '../../db-provider/db.provider.interface';
 import { EventEmitterService } from '../../event-emitter/event-emitter.service';
 import { Events } from '../../event-emitter/events';
 import type { IClsStore } from '../../types/cls';
+import { second } from '../../utils/second';
 import StorageAdapter from '../attachments/plugins/adapter';
 import { InjectStorageAdapter } from '../attachments/plugins/storage';
 import { createFieldInstanceByRaw } from '../field/model/factory';
@@ -58,7 +60,8 @@ export class BaseExportService {
     private readonly eventEmitterService: EventEmitterService,
     @InjectModel('CUSTOM_KNEX') private readonly knex: Knex,
     @InjectDbProvider() private readonly dbProvider: IDbProvider,
-    @InjectStorageAdapter() private readonly storageAdapter: StorageAdapter
+    @InjectStorageAdapter() private readonly storageAdapter: StorageAdapter,
+    @StorageConfig() private readonly storageConfig: IStorageConfig
   ) {}
 
   private generateExportFolderId() {
@@ -81,7 +84,7 @@ export class BaseExportService {
         const previewUrl = await this.storageAdapter.getPreviewUrl(
           StorageAdapter.getBucket(UploadType.ExportBase),
           path,
-          60 * 60 * 24 * 7,
+          second(this.storageConfig.tokenExpireIn),
           {
             // eslint-disable-next-line
             'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(name)}`,
@@ -193,7 +196,21 @@ export class BaseExportService {
       const crossBaseFieldRaws = crossBaseRelativeFieldsRaws.filter(
         ({ tableId }) => tableId === tableRaw.id
       );
-      await this.appendTableDataCsv('tables', tableRaw, crossBaseFieldRaws, archive);
+      const buttonDbFieldNames = fieldRaws
+        .filter(
+          ({ type, isLookup, tableId }) =>
+            type === FieldType.Button && !isLookup && tableId === tableRaw.id
+        )
+        .map((f) => f.dbFieldName);
+
+      const excludeDbFieldNames = [...EXCLUDE_SYSTEM_FIELDS, ...buttonDbFieldNames];
+      await this.appendTableDataCsv(
+        archive,
+        'tables',
+        tableRaw,
+        crossBaseFieldRaws,
+        excludeDbFieldNames
+      );
     }
 
     const linkFieldInstances = fieldRaws
@@ -219,10 +236,14 @@ export class BaseExportService {
 
     archive.finalize();
 
-    const uploadResult = await this.storageAdapter.uploadFile(
+    const uploadResult = await this.storageAdapter.uploadFileStream(
       bucket,
       `${pathDir}/${token}.${BaseExportService.FILE_SUFFIX}`,
-      passThrough
+      passThrough,
+      {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'application/zip',
+      }
     );
 
     return {
@@ -360,10 +381,11 @@ export class BaseExportService {
   }
 
   private async appendTableDataCsv(
+    archive: archiver.Archiver,
     filePath: string,
     tableRaw: TableMeta,
     crossBaseRelativeFields: Field[],
-    archive: archiver.Archiver
+    excludeDbFieldNames: string[]
   ) {
     const { dbTableName, id } = tableRaw;
     const csvStream = new PassThrough();
@@ -379,7 +401,7 @@ export class BaseExportService {
     const columnHeader = columnInfo
       .map(({ name }) => name)
       // exclude system fields
-      .filter((name) => !EXCLUDE_SYSTEM_FIELDS.includes(name))
+      .filter((name) => !excludeDbFieldNames.includes(name))
       // exclude fk fields which are cross base link fields
       .filter((name) => !fkNames.includes(name));
     // write the column header
@@ -414,7 +436,7 @@ export class BaseExportService {
         dbTableName,
         offset,
         crossBaseRelativeFields,
-        EXCLUDE_SYSTEM_FIELDS
+        excludeDbFieldNames
       );
       if (csvChunk.length === 0) {
         hasMoreData = false;
@@ -573,7 +595,7 @@ export class BaseExportService {
     excludeFieldNames: string[]
   ) {
     const rawRecords = await this.getChunkRecords(dbTableName, offset);
-    // 1. clear unless system fields
+    // 1. clear unless fields
     const records = rawRecords.map((record) => omit(record, excludeFieldNames));
     // 2. convert to csv value
     return records.map((record) =>

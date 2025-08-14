@@ -304,6 +304,7 @@ export class TableService implements IReadonlyAdapterService {
         data: ops,
       },
     ]);
+
     return tableRawAfter;
   }
 
@@ -311,16 +312,24 @@ export class TableService implements IReadonlyAdapterService {
     await this.createDBTable(baseId, snapshot);
   }
 
-  async getSnapshotBulk(baseId: string, ids: string[]): Promise<ISnapshotBase<ITableVo>[]> {
+  async getSnapshotBulk(
+    baseId: string,
+    ids: string[],
+    ops: {
+      ignoreDefaultViewId?: boolean;
+    } = {}
+  ): Promise<ISnapshotBase<ITableVo>[]> {
+    const { ignoreDefaultViewId } = ops;
     const tables = await this.prismaService.txClient().tableMeta.findMany({
       where: { baseId, id: { in: ids }, deletedTime: null },
       orderBy: { order: 'asc' },
     });
-    const tableDefaultViewIds = await this.getTableDefaultViewId(ids);
+
+    const tableDefaultViewIds = ignoreDefaultViewId ? [] : await this.getTableDefaultViewId(ids);
     return tables
       .sort((a, b) => ids.indexOf(a.id) - ids.indexOf(b.id))
       .map((table, i) => {
-        return {
+        const res = {
           id: table.id,
           v: table.version,
           type: 'json0',
@@ -330,9 +339,12 @@ export class TableService implements IReadonlyAdapterService {
             icon: table.icon ?? undefined,
             lastModifiedTime:
               table.lastModifiedTime?.toISOString() || table.createdTime.toISOString(),
-            defaultViewId: tableDefaultViewIds[i],
-          },
+          } as ITableVo,
         };
+        if (!ignoreDefaultViewId) {
+          res.data.defaultViewId = tableDefaultViewIds[i];
+        }
+        return res;
       });
   }
 

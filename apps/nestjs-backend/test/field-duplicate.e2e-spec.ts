@@ -1,10 +1,18 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable sonarjs/cognitive-complexity */
 import type { INestApplication } from '@nestjs/common';
-import type { ILinkFieldOptions } from '@teable/core';
-import { FieldType, ViewType } from '@teable/core';
-import type { ITableFullVo } from '@teable/openapi';
-import { createField, getFields, duplicateField, createView, getView } from '@teable/openapi';
+import type { IButtonFieldCellValue, IFieldRo, ILinkFieldOptions } from '@teable/core';
+import { Colors, FieldType, generateWorkflowId, Relationship, ViewType } from '@teable/core';
+import type { ICreateBaseVo, ITableFullVo } from '@teable/openapi';
+import {
+  createField,
+  getFields,
+  duplicateField,
+  createView,
+  getView,
+  buttonClick,
+  createBase,
+} from '@teable/openapi';
 import { omit, pick } from 'lodash';
 import { x_20 } from './data-helpers/20x';
 import { x_20_link, x_20_link_from_lookups } from './data-helpers/20x-link';
@@ -14,6 +22,7 @@ import { createTable, permanentDeleteTable, initApp } from './utils/init-app';
 describe('OpenAPI FieldOpenApiController for duplicate field (e2e)', () => {
   let app: INestApplication;
   const baseId = globalThis.testConfig.baseId;
+  const spaceId = globalThis.testConfig.spaceId;
 
   beforeAll(async () => {
     const appCtx = await initApp();
@@ -49,7 +58,12 @@ describe('OpenAPI FieldOpenApiController for duplicate field (e2e)', () => {
       table.fields = (await getFields(table.id)).data;
       subTable.fields = (await getFields(subTable.id)).data;
 
-      const nonCommonFieldType = [FieldType.Link, FieldType.Rollup, FieldType.Formula];
+      const nonCommonFieldType = [
+        FieldType.Link,
+        FieldType.Rollup,
+        FieldType.Formula,
+        FieldType.Button,
+      ];
       const commonFields = table.fields.filter((field) => !nonCommonFieldType.includes(field.type));
 
       for (const field of commonFields) {
@@ -70,6 +84,68 @@ describe('OpenAPI FieldOpenApiController for duplicate field (e2e)', () => {
     afterAll(async () => {
       await permanentDeleteTable(baseId, table.id);
       await permanentDeleteTable(baseId, subTable.id);
+    });
+  });
+
+  describe('duplicate cross-base link fields', () => {
+    let table: ITableFullVo;
+    let crossTable: ITableFullVo;
+    let otherBase: ICreateBaseVo;
+    beforeAll(async () => {
+      table = await createTable(baseId, {
+        name: 'main_table',
+        fields: x_20.fields,
+      });
+
+      otherBase = (
+        await createBase({
+          spaceId,
+          name: 'other-base',
+        })
+      ).data;
+
+      crossTable = await createTable(otherBase.id, {
+        name: 'record_query_x_20',
+        fields: [
+          {
+            type: FieldType.SingleLineText,
+            name: 'single_line_text',
+          },
+        ],
+      });
+    });
+    afterAll(async () => {
+      await permanentDeleteTable(baseId, table.id);
+      await permanentDeleteTable(baseId, crossTable.id);
+    });
+
+    it('should duplicate link field with cross-base table', async () => {
+      const linkField = (
+        await createField(table.id, {
+          type: FieldType.Link,
+          name: 'link',
+          options: {
+            baseId: otherBase.id,
+            foreignTableId: crossTable.id,
+            relationship: Relationship.ManyMany,
+          },
+        })
+      ).data;
+
+      const copiedLinkField = (
+        await duplicateField(table.id, linkField.id, {
+          name: `${linkField.name}_copy`,
+        })
+      ).data;
+
+      expect(
+        pick(copiedLinkField.options, ['baseId', 'foreignTableId', 'relationship', 'isOneWay'])
+      ).toEqual({
+        baseId: otherBase.id,
+        foreignTableId: crossTable.id,
+        relationship: Relationship.ManyMany,
+        isOneWay: true,
+      });
     });
   });
 
@@ -267,6 +343,60 @@ describe('OpenAPI FieldOpenApiController for duplicate field (e2e)', () => {
     afterAll(async () => {
       await permanentDeleteTable(baseId, table.id);
       await permanentDeleteTable(baseId, subTable.id);
+    });
+  });
+
+  describe('duplicate button field', () => {
+    let table1: ITableFullVo;
+    let table2: ITableFullVo;
+
+    beforeEach(async () => {
+      table1 = await createTable(baseId, { name: 'table1' });
+      table2 = await createTable(baseId, { name: 'table2' });
+    });
+
+    afterEach(async () => {
+      await permanentDeleteTable(baseId, table1.id);
+      await permanentDeleteTable(baseId, table2.id);
+    });
+
+    it('should duplicate button field', async () => {
+      const buttonFieldRo: IFieldRo = {
+        name: 'button',
+        type: FieldType.Button,
+        options: {
+          label: 'button label',
+          color: Colors.Red,
+          workflow: {
+            id: generateWorkflowId(),
+            name: 'workflow1',
+            isActive: true,
+          },
+        },
+      };
+      const buttonField = (await createField(table1.id, buttonFieldRo)).data;
+
+      const clickRes = await buttonClick(table1.id, table1.records[0].id, buttonField.id);
+      const clickValue = clickRes.data.record.fields[buttonField.id] as IButtonFieldCellValue;
+      expect(clickValue.count).toEqual(1);
+
+      const copiedButtonField = (
+        await duplicateField(table1.id, buttonField.id, {
+          name: `${buttonField.name}_copy`,
+        })
+      ).data;
+
+      expect(copiedButtonField.name).toBe(`${buttonField.name}_copy`);
+      const expectedButtonField = {
+        ...buttonField,
+        options: {
+          ...buttonField.options,
+          workflow: undefined,
+        },
+      };
+
+      const keys = ['name', 'dbFieldName', 'id', 'isPrimary'];
+      expect(omit(expectedButtonField, keys)).toEqual(omit(copiedButtonField, keys));
     });
   });
 
