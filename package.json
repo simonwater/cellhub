@@ -8,7 +8,8 @@
     "dev:web": "pnpm --filter web dev",
     "build:backend": "pnpm --filter backend build",
     "build:web": "pnpm --filter web build",
-    "test:all": "pnpm -r test"
+    "test:all": "pnpm -r test",
+    "nuke:node_modules": "pnpm -r exec -- rm -fr node_modules"
   },
   "keywords": [],
   "author": "",

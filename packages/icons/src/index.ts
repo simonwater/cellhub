@@ -1,4 +1,5 @@
 export { default as A } from './components/A';
+export { default as AddBold } from './components/AddBold';
 export { default as Admin } from './components/Admin';
 export { default as AiAction } from './components/AiAction';
 export { default as AlertCircle } from './components/AlertCircle';
@@ -136,6 +137,7 @@ export { default as RefreshCcw } from './components/RefreshCcw';
 export { default as RotateCw } from './components/RotateCw';
 export { default as ScriptAction } from './components/ScriptAction';
 export { default as Search } from './components/Search';
+export { default as Select } from './components/Select';
 export { default as SendMail } from './components/SendMail';
 export { default as Settings } from './components/Settings';
 export { default as Share2 } from './components/Share2';

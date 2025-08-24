@@ -137,6 +137,7 @@ const nextConfig = {
   // @link discussion: https://github.com/vercel/next.js/discussions/30237
   // Sometimes buggy so enable/disable when debugging.
   swcMinify: true,
+  fastRefresh: true,
 
   compiler: {
     // emotion: true,

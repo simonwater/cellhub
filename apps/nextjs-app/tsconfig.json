@@ -77,12 +77,6 @@
       ],
       "@teable/icons": [
         "../../../packages/icons/src/index"
-      ],
-      "@superset-ui/core": [
-        "../../../packages/superset-ui-core/src"
-      ],
-      "@superset-ui/core/*": [
-        "../../../packages/superset-ui-core/src/*"
       ]
     },
     "plugins": [

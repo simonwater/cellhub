@@ -59,7 +59,7 @@ export const FieldSetting = () => {
   const fieldVo = fieldVoSchema.safeParse(field);
   if (!fieldVo.success) {
     console.log('errorField:', field);
-    console.error(fieldVo.error);
+    console.info(fieldVo.error);
   }
 
   return (

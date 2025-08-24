@@ -1,6 +1,6 @@
 import { FieldType, PRIMARY_SUPPORTED_TYPES } from '@teable/core';
 import { FIELD_TYPE_ORDER, useFieldStaticGetter } from '@teable/sdk';
-import SearchIcon from '@teable/ui-lib/icons/app/search.svg';
+import { Search } from '@teable/icons';
 import {
   Button,
   cn,
@@ -152,7 +152,7 @@ export const SelectFieldType = (props: {
       list.push({
         id: 'lookup',
         name: t('sdk:field.title.lookup'),
-        icon: <SearchIcon className="size-4" />,
+        icon: <Search className="size-4" />,
       });
     }
     return list;
@@ -196,7 +196,7 @@ export const SelectFieldType = (props: {
       : result.concat({
           id: 'lookup',
           name: t('sdk:field.title.lookup'),
-          icon: <SearchIcon className="size-4" />,
+          icon: <Search className="size-4" />,
         });
   }, [getFieldStatic, t, isPrimary]);
 

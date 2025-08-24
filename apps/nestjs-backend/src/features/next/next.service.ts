@@ -27,7 +27,8 @@ export class NextService implements OnModuleInit, OnModuleDestroy {
         port: port,
         dir: nextJsDir,
         hostname: 'localhost',
-      });
+        turbopack: true,
+      }) as NextServer;
       await this.server.prepare();
     } catch (error) {
       this.logger.error(error);

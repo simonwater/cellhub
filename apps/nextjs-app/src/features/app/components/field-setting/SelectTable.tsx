@@ -1,6 +1,6 @@
 import type { Table } from '@teable/sdk/model';
-import ArrowDownIcon from '@teable/ui-lib/icons/app/arrow-down.svg';
-import SelectIcon from '@teable/ui-lib/icons/app/select.svg';
+import { Select } from '@teable/icons';
+import { ArrowDown } from '@teable/icons';
 import { cn } from '@teable/ui-lib/shadcn';
 import { Button } from '@teable/ui-lib/shadcn/ui/button';
 import {
@@ -38,7 +38,7 @@ export const SelectTable = (props: {
           {value
             ? tables.find(({ id }) => id === value)?.name
             : t('table:field.editor.selectTable')}
-          <ArrowDownIcon className="ml-2 size-4 shrink-0 opacity-50" />
+          <ArrowDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" style={{ width: ref.current?.offsetWidth }}>
@@ -55,7 +55,7 @@ export const SelectTable = (props: {
                   setOpen(false);
                 }}
               >
-                <SelectIcon
+                <Select
                   className={cn('mr-2 h-4 w-4', value === id ? 'opacity-100' : 'opacity-0')}
                 />
                 {name}

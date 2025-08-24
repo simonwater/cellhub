@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@teable/ui-lib';
-import AddBoldIcon from '@teable/ui-lib/icons/app/add-bold.svg';
+import { AddBold } from '@teable/icons';
 import { Button } from '@teable/ui-lib/shadcn/ui/button';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
@@ -38,7 +38,7 @@ export const TableList: React.FC = () => {
           <div className="px-3">
             {permission?.['table|create'] && (
               <Button variant={'outline'} size={'xs'} className={`${GUIDE_CREATE_TABLE} w-full`}>
-                <AddBoldIcon />
+                <AddBold />
               </Button>
             )}
           </div>
